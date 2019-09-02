@@ -7,10 +7,10 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
-class Location extends StatelessWidget {
+class point extends StatelessWidget {
   final size;
 
-  Location({
+  point({
     this.size
   });
 
@@ -20,10 +20,9 @@ class Location extends StatelessWidget {
       width: size??30,
       height: size??30,
       child: FlareActor(
-          "assets/animation/location.flr" ,
+          "assets/animation/point.flr" ,
           animation: "state"
       ),
     );
   }
 }
-

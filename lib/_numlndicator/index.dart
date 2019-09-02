@@ -20,7 +20,7 @@ class EluiNumlndicatorComponent extends StatefulWidget {
   EluiNumlndicatorComponent(
       {this.value,
       this.min = 0,
-      this.max = null,
+      this.max,
       this.superposition = 1,
       this.longtag,
       this.disabled = false,
