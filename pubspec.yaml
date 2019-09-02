@@ -1,0 +1,25 @@
+name: flutter_plugin_elui
+description: elui
+version: 0.0.1
+author:
+homepage:
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 动画包
+  flare_flutter: ^1.5.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    androidPackage: com.elui.flutter_plugin_elui
+    pluginClass: FlutterPluginEluiPlugin
+
