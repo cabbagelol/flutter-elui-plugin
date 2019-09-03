@@ -1,14 +1,21 @@
 # flutter_plugin_elui
 
-ui继承于elui，由dart + flutter组成的ui库。
+Ui风格继承于elui，由dart + flutter组成的ui库，适用于andorid和ios.
 
-## Getting Started
+============== !! 警告⚠️ !! ================
+当前版本EluiFlutter处于试验性，不建议投入使用。
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## 使用
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+[![pub package](https://img.shields.io/badge/pub-0.0.1-brightgreen)](https://github.com/cabbagelol/flutter-plugin-drawer)
+[![pub package](https://img.shields.io/badge/ios-yes-green)](https://github.com/cabbagelol/flutter-plugin-drawer)
+[![pub package](https://img.shields.io/badge/android-yes-green)](https://github.com/cabbagelol/flutter-plugin-drawer)
+
+请将在pubspec.yaml中配置：
+
+``` dart
+  # flutter-elui-plugin: 0.0.1
+  import "package: flutter-elui-plugin/elui.dart";
+```
+
+通过智能的IDE中输入Elui开头将展示Elui所提供的控件，如果需要更多的组件支持(技术文档正中赶来路上)，欢迎前往Elui Flutter技术文档查看.
