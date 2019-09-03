@@ -11,6 +11,14 @@ import 'threeBounce_widget.dart';
 import 'location_widget.dart';
 import 'point_widget.dart';
 
+enum EluiLoadType {
+  main,
+  location,
+  point,
+  threeBounce,
+  line
+}
+
 class ELuiLoadComponent extends StatelessWidget {
   final String type;
   final Color color;

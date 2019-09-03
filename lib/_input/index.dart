@@ -12,7 +12,7 @@ class EluiInputComponent extends StatelessWidget {
   final String placeholder;
   final Widget icon;
   final Widget right;
-
+  
   EluiInputComponent({Key key,
     this.title,
     this.value,
@@ -59,7 +59,7 @@ class Input extends StatefulWidget {
     this.placeholder,
     this.maxLines = 1,
     this.maxLength,
-    this.contentPadding = EdgeInsets.all(0),
+    this.contentPadding = const EdgeInsets.all(0),
     this.onChanged
   });
 
