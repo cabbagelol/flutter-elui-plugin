@@ -45,7 +45,7 @@ class _MyAppBarState extends State<EluiHeadComponent> {
         style: widget.titleStyle ?? new TextStyle(
           color: Colors.black,
           fontSize: 17.0,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.bold,
         ),
       ),
       centerTitle: widget.centerTitle,

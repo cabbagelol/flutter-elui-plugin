@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../_animation/rotating.dart';
+
 import 'package:flutter_plugin_elui/_theme/index.dart';
+import '../_animation/rotating.dart';
 import '../_icon/index.dart';
 
 // 颜色类型
