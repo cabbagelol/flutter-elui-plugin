@@ -95,8 +95,19 @@ class _EluiTagColorClass {
   ];
 }
 
+class EluiTagtheme<EluiTagColor> with _EluiTagColorClass {
+  final Color borderColor; // 边框颜色
+  final Color textColor; // 字体颜色
+  final Color backgroundColor; // 背景颜色
+
+  EluiTagtheme({Key key, this.borderColor = null, this.textColor = null, this.backgroundColor = null});
+}
+
 class EluiTagComponent extends StatefulWidget
     with _EluiTagSizeClass, _EluiTagColorClass {
+  // theme
+  final EluiTagtheme theme;
+
   // 圆角
   final bool round;
 
@@ -104,15 +115,17 @@ class EluiTagComponent extends StatefulWidget
   final String value;
 
   // 幽灵
-  final Border plain;
+  final bool plain;
 
   // 自定义字体颜色
   final TextStyle textStyle;
 
   EluiTagComponent(
-      {this.round = false,
+      {
+      this.theme,
+      this.round = false,
       this.value,
-      this.plain,
+      this.plain = false,
       this.textStyle,
       EluiTagColor color = EluiTagColor.none,
       EluiTagSize size = EluiTagSize.no4}) {
@@ -132,9 +145,9 @@ class EluiTagComponentState extends State<EluiTagComponent> {
     return Row(mainAxisSize: MainAxisSize.min, children: [
       DecoratedBox(
           decoration: BoxDecoration(
-            color: widget.color['color'],
+            color: widget.plain ? Colors.transparent : ( widget.theme != null ? widget.theme.backgroundColor : widget.color['color'] ),
             borderRadius: BorderRadius.all(Radius.circular(widget.round ? 100 : 2.0)),
-//              border: widget.border
+            border: widget.plain ? Border.all(style: BorderStyle.solid, color: widget.theme != null ? widget.theme.borderColor??widget.color['textColor'] : widget.color['textColor']) : null
           ),
           child: Padding(
               padding: EdgeInsets.only(
@@ -148,7 +161,7 @@ class EluiTagComponentState extends State<EluiTagComponent> {
                   child: Text(widget.value,
                       style: widget.textStyle ??
                           TextStyle(
-                              color: widget.color['textColor'],
+                              color: widget.theme != null ? widget.theme.textColor??widget.color['textColor'] : widget.color['textColor'],
                               fontSize: 13)))))
     ]);
   }

@@ -13,15 +13,14 @@ class EluiCellComponent extends StatefulWidget {
   final Widget cont;
   final GestureTapCallback onTap;
 
-  EluiCellComponent({
-    this.icons,
-    this.title,
-    this.islink = false,
-    this.isBotton = false,
-    this.label,
-    this.cont,
-    this.onTap
-  });
+  EluiCellComponent(
+      {this.icons,
+      this.title,
+      this.islink = false,
+      this.isBotton = false,
+      this.label,
+      this.cont,
+      this.onTap});
 
   @override
   State<EluiCellComponent> createState() {
@@ -30,12 +29,12 @@ class EluiCellComponent extends StatefulWidget {
 }
 
 class EluiCellComponentState extends State<EluiCellComponent> {
-  Widget _islink () {
-   if (widget.islink) {
-     return Icon(Icons.keyboard_arrow_right);
-   }
-   return Column();
- }
+  Widget _islink() {
+    if (widget.islink) {
+      return Icon(Icons.keyboard_arrow_right);
+    }
+    return Column();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,46 +44,48 @@ class EluiCellComponentState extends State<EluiCellComponent> {
         padding: EdgeInsets.only(bottom: 1),
         child: Container(
           color: Colors.white,
-          padding: EdgeInsets.only(top: 15, bottom:15, left: 20, right: 20),
-          child: Row (
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Row(
-                  children: <Widget>[
-                    widget.icons != null ? Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: Icon(widget.icons),
-                    ) : Container(),
-                    Column(
+              Row(
+                children: <Widget>[
+                  widget.icons != null
+                      ? Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Icon(widget.icons),
+                        )
+                      : Container(),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(widget.title),
-                        widget.label != null ? Text(
+                        widget.label != null
+                            ? Text(
                           widget.label,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: 11
-                          ),
-                        ) : Column()
+                          style: TextStyle(fontSize: 11),
+                        )
+                            : Column()
                       ],
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
               Expanded(
+                  flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.only(right: widget.islink ? 10 : 0),
-                        child:  widget.cont??Column(),
+                        child: widget.cont ?? Column(),
                       )
                     ],
-                  )
-              ),
+                  )),
               _islink()
             ],
           ),
