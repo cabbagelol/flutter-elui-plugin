@@ -3,6 +3,8 @@ import '../_toast/index.dart';
 
 const Color _primaryColor = Color(0xff00b6c2);
 const Color _primaryColorDisabled = Color(0xff09c6d2);
+const Color _succeedColor = Color(0xff8bc34a);
+const Color _succeedColorDisabled = Color.fromRGBO(96, 138, 48, 0.29);
 const Color _errorColor = Color(0xffE64340);
 const Color _errorColorDisabled = Color(0xffEC8B89);
 const Color _warnColor = Color(0xffffc107);
@@ -16,54 +18,76 @@ final _defaultConfig = WeConfig();
 
 // 主题
 class EluiTheme {
-    // 主色
+  // 主色
   final Color primaryColor;
-    // 主色禁用
+
+  // 主色禁用
   final Color primaryColorDisabled;
+
+  // 成功
+  final Color succeedColor;
+
+  // 成功禁用
+  final Color succeedColorDisabled;
+
   // 警告色
   final Color errorColor;
+
   // 警告色禁用
   final Color errorColorDisabled;
+
   // 错误色
   final Color warnColor;
+
   // 错误色禁用
   final Color warnColorDisabled;
+
   // 默认背景色
   final Color defaultBackgroundColor;
+
   // 默认边框色
   final Color defaultBorderColor;
+
   // 遮罩层颜色
   final Color maskColor;
 
-  EluiTheme({
-    this.primaryColor = _primaryColor,
-    this.primaryColorDisabled = _primaryColorDisabled,
-    this.errorColor = _errorColor,
-    this.errorColorDisabled = _errorColorDisabled,
-    this.warnColor = _warnColor,
-    this.warnColorDisabled = _warnColorDisabled,
-    this.defaultBackgroundColor = _defaultBackgroundColor,
-    this.defaultBorderColor = _defaultBorderColor,
-    this.maskColor = _maskColor
-  });
+  EluiTheme(
+      {this.primaryColor = _primaryColor,
+      this.primaryColorDisabled = _primaryColorDisabled,
+      this.succeedColor = _succeedColor,
+      this.succeedColorDisabled = _succeedColorDisabled,
+      this.errorColor = _errorColor,
+      this.errorColorDisabled = _errorColorDisabled,
+      this.warnColor = _warnColor,
+      this.warnColorDisabled = _warnColorDisabled,
+      this.defaultBackgroundColor = _defaultBackgroundColor,
+      this.defaultBorderColor = _defaultBorderColor,
+      this.maskColor = _maskColor});
 }
 
 // 配置
 class WeConfig {
   // toast 位置
   final WeToastInfoAlign toastInfoAlign;
+
   // toast info自动关闭时间
   final int toastInfoDuration;
+
   // toast loading关闭时间
   final int toastLoadingDuration;
+
   // toast success关闭时间
   final int toastSuccessDuration;
+
   // toast fail关闭时间
   final int toastFailDuration;
+
   // notify自动关闭时间
   final int notifyDuration;
+
   // notify成功关闭时间
   final int notifySuccessDuration;
+
   // notify错误关闭时间
   final int notifyErrorDuration;
 
@@ -83,12 +107,8 @@ class EluiUi extends InheritedWidget {
   final EluiTheme theme;
   final WeConfig config;
 
-  EluiUi({
-    Key key,
-    this.theme,
-    this.config,
-    Widget child
-  }) : super(key: key, child: child);
+  EluiUi({Key key, this.theme, this.config, Widget child})
+      : super(key: key, child: child);
 
   static EluiUi of(BuildContext context) {
     return context.inheritFromWidgetOfExactType(EluiUi);

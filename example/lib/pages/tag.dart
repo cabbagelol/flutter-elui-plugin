@@ -11,7 +11,7 @@ class _tagPageState extends State<tagPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: EluiHeadComponent(context: context, title: 'tag'),
+        appBar: EluiHeadComponent(context: context, title: '标签'),
         body: ListView(
           children: <Widget>[
             EluiCellComponent(
@@ -43,7 +43,7 @@ class _tagPageState extends State<tagPage> {
                 children: <Widget>[
                   EluiTagComponent(
                     round: true,
-                    color: EluiTagColor.suceed,
+                    color: EluiTagColor.succeed,
                     value: '标签',
                   ),
                   EluiTagComponent(

@@ -11,7 +11,7 @@ import 'package:flutter_plugin_elui/_theme/index.dart';
 enum EluiTagSize { no3, no4, no5, no7 }
 
 // color
-enum EluiTagColor { none, suceed, warning, error, primary }
+enum EluiTagColor { none, succeed, warning, error, primary }
 
 class _EluiTagSizeClass {
   // tag大小类型

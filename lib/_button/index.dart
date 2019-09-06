@@ -5,62 +5,61 @@ import '../_animation/rotating.dart';
 import '../_icon/index.dart';
 
 // 颜色类型
-enum ButtonType {
-  acquiescent,
-  primary,
-  warn
-}
+enum ButtonType { none, succeed, warning, error, primary }
 
 // size
-enum ButtonSize {
-  acquiescent,
-  mini
-}
+enum ButtonSize { mini, normal,large }
 
-class EluiButtonComponent extends StatefulWidget {
-  // 内容
-  dynamic child;
-  // 禁用
-  final bool disabled;
-  // 点击回调
-  final Function onClick;
-  // loading
-  final bool loading;
-  // 空心
-  final bool hollow;
+class _EluiButtonClass {
   // 按钮大小类型
   ButtonSize sizeType;
+
   // 按钮大小
   Map<String, double> size;
-  // 主题
-  final ButtonType theme;
+
   // 大小配置
   final List<Map<String, double>> sizeConfig = [
-    {
-      'fontSize': 18.0,
-      'height': 45.0,
-      'iconSize': 16.0,
-      'borderSize': 0.5
-    },
-    {
-      'fontSize': 13.0,
-      'height': 30.0,
-      'iconSize': 14.0,
-      'borderSize': 0.4
-    }
+    {'fontSize': 13.0, 'height': 30.0, 'iconSize': 14.0, 'borderSize': 0.4},
+    {'fontSize': 18.0, 'height': 45.0, 'iconSize': 16.0, 'borderSize': 0.5},
+    {'fontSize': 21.0, 'height': 60.0, 'iconSize': 18.0, 'borderSize': 0.6}
   ];
+}
 
-  EluiButtonComponent(
-    {
-      this.child,
-      this.onClick,
-      ButtonSize size = ButtonSize.acquiescent,
-      this.hollow = false,
-      this.theme = ButtonType.acquiescent,
-      this.disabled = false,
-      this.loading = false,
-    }
-  ) {
+class EluiButtonComponent extends StatefulWidget with _EluiButtonClass {
+  // 内容
+  dynamic child;
+
+  // 禁用
+  final bool disabled;
+
+  // 点击回调
+  final Function onTap;
+
+  // loading
+  final bool loading;
+
+  // 空心
+  final bool hollow;
+
+  // button 类型
+  final ButtonType type;
+
+  // 主题
+  final EluiButtonTheme theme;
+
+  final bool radius;
+
+  EluiButtonComponent({
+    this.child,
+    ButtonSize size = ButtonSize.normal,
+    this.hollow = false,
+    this.type,
+    this.theme,
+    this.radius = false,
+    this.disabled = false,
+    this.loading = false,
+    this.onTap,
+  }) {
     this.size = sizeConfig[size.index];
     this.sizeType = size;
   }
@@ -69,62 +68,85 @@ class EluiButtonComponent extends StatefulWidget {
   _EluiButtonComponentState createState() => _EluiButtonComponentState();
 }
 
+class EluiButtonTheme {
+  final Color backgroundColor;
+
+  EluiButtonTheme({Key key, this.backgroundColor = null});
+}
+
 class _EluiButtonComponentState extends State<EluiButtonComponent> {
   // 主题
   List<Map<String, Color>> themeConfig;
+
   // 按钮主题
-  Map<String, Color> theme;
+  Map<String, Color> type;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final EluiTheme theme = EluiUi.getTheme(context);
-    // 按钮主题
+    // 按钮主题 none, succeed, warning, error, primary
     themeConfig = [
-      // 默认
+      // none
       {
-        'backgroundColor': theme.defaultBackgroundColor,
+        'backgroundColor': Colors.transparent,
         'fontColor': Colors.black,
-        'disabledBackgroundColor': Color(0xfff7f7f7),
-        'borderColor': theme.defaultBorderColor,
-        'hollowColor': Color(0xff353535)
+        'disabledBackgroundColor': Colors.transparent,
+        'borderColor': Colors.transparent,
+        'hollowColor': Colors.transparent
+      },
+      // succeed
+      {
+        'backgroundColor': theme.succeedColor,
+        'fontColor': Colors.white,
+        'disabledBackgroundColor': theme.succeedColorDisabled,
+        'borderColor': theme.succeedColorDisabled,
+        'hollowColor': Colors.transparent
+      },
+      // warning
+      {
+        'backgroundColor': theme.warnColor,
+        'fontColor': Colors.white,
+        'disabledBackgroundColor': theme.warnColorDisabled,
+        'borderColor': theme.primaryColor,
+        'hollowColor': Colors.transparent
+      },
+      // error
+      {
+        'backgroundColor': theme.errorColor,
+        'fontColor': Colors.white,
+        'disabledBackgroundColor': theme.errorColorDisabled,
+        'borderColor': theme.warnColor,
+        'hollowColor': Colors.transparent
       },
       // primary
       {
         'backgroundColor': theme.primaryColor,
         'fontColor': Colors.white,
         'disabledBackgroundColor': theme.primaryColorDisabled,
-        'borderColor': theme.primaryColor,
-        'hollowColor': theme.primaryColor
-      },
-      // warn
-      {
-        'backgroundColor': theme.warnColor,
-        'fontColor': Colors.white,
-        'disabledBackgroundColor': theme.warnColorDisabled,
         'borderColor': theme.warnColor,
-        'hollowColor': theme.warnColor
+        'hollowColor': Colors.transparent
       }
     ];
 
-    final themeConf = themeConfig[widget.theme.index];
+    final themeConf = themeConfig[widget.type.index];
     // 判断是否空心
     if (widget.hollow) {
-      this.theme = {
+      this.type = {
         'backgroundColor': Colors.transparent,
         'fontColor': themeConf['hollowColor'],
         'disabledBackgroundColor': null,
         'borderColor': themeConf['hollowColor']
       };
     } else {
-      this.theme = themeConf;
+      this.type = themeConf;
     }
   }
 
   // 按钮点击
   onClick() {
-    if (widget.onClick is Function) {
-      widget.onClick();
+    if (widget.onTap is Function) {
+      widget.onTap();
     }
   }
 
@@ -144,34 +166,27 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
     // 内容
     List<Widget> children = [
       DefaultTextStyle(
-        style: TextStyle(
-          fontSize: size['fontSize'],
-          color: theme['fontColor']
-        ),
-        child: child
-      )
+          style:
+              TextStyle(fontSize: size['fontSize'], color: type['fontColor']),
+          child: child)
     ];
 
     if (widget.loading) {
       final Widget icon = Padding(
-        padding: EdgeInsets.only(right: 5),
-        child: Rotating(Icon(
-          WeIcons.loading,
-          color: theme['fontColor'],
-          size: size['iconSize']
-        ))
-      );
+          padding: EdgeInsets.only(right: 5),
+          child: Rotating(Icon(WeIcons.loading,
+              color: type['fontColor'], size: size['iconSize'])));
       children.insert(0, icon);
     }
 
     return Opacity(
-      opacity: disabled ? 0.7 : 1,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: widget.sizeType == ButtonSize.mini ? MainAxisSize.min : MainAxisSize.max,
-        children: children
-      )
-    );
+        opacity: disabled ? 0.7 : 1,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: widget.sizeType == ButtonSize.mini
+                ? MainAxisSize.min
+                : MainAxisSize.max,
+            children: children));
   }
 
   @override
@@ -181,22 +196,20 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
     // 是否禁用状态
     final bool disabled = widget.loading || widget.disabled;
     // 圆角
-    final BorderRadius borderRadius = BorderRadius.all(Radius.circular(4));
+    final BorderRadius borderRadius = BorderRadius.all(Radius.circular(widget.radius ? 100 : 4));
     // 按钮
     final Widget button = Container(
-      height: size['height'],
-      padding: EdgeInsets.only(left: 10, right: 10),
-      decoration: BoxDecoration(
-        color: disabled ? theme['disabledBackgroundColor'] : null,
-        borderRadius: borderRadius,
-        // 空心或者默认按钮才添加边框
-        border: widget.hollow || widget.theme == ButtonType.acquiescent ? Border.all(
-          width: size['borderSize'],
-          color: theme['borderColor']
-        ) : null
-      ),
-      child: renderChild(widget.child)
-    );
+        height: size['height'],
+        padding: EdgeInsets.only(left: 10, right: 10),
+        decoration: BoxDecoration(
+            color: disabled ? type['disabledBackgroundColor'] : widget.theme != null ? widget.theme.backgroundColor : null,
+            borderRadius: borderRadius,
+            // 空心或者默认按钮才添加边框
+            border: widget.hollow || widget.theme == ButtonType.none
+                ? Border.all(
+                    width: size['borderSize'], color: type['borderColor'])
+                : null),
+        child: renderChild(widget.child));
 
     // 禁用状态
     if (disabled) {
@@ -204,13 +217,9 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
     }
 
     return Material(
-      borderRadius: borderRadius,
-      color: theme['backgroundColor'],
-      child: InkWell(
-        onTap: onClick,
         borderRadius: borderRadius,
-        child: button
-      )
-    );
+        color: type['backgroundColor'],
+        child:
+            InkWell(onTap: onClick, borderRadius: borderRadius, child: button));
   }
 }

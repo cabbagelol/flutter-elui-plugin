@@ -39,6 +39,7 @@ class EluiInputComponent extends StatelessWidget {
             flex: 2,
             child: Input(
               placeholder: placeholder,
+              value: value
             ),
           ),
           right ?? Container()
@@ -53,6 +54,7 @@ class Input extends StatefulWidget {
   final maxLines;
   final maxLength;
   final contentPadding;
+  final value;
   final Function onChanged;
 
   Input({
@@ -60,6 +62,7 @@ class Input extends StatefulWidget {
     this.maxLines = 1,
     this.maxLength,
     this.contentPadding = const EdgeInsets.all(0),
+    this.value,
     this.onChanged
   });
 
@@ -73,6 +76,12 @@ class InputState extends State<Input> {
 
   void setValue(value_) {
     _name.text = value_;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.setValue(widget.value);
   }
 
   @override

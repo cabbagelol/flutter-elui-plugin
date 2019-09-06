@@ -35,7 +35,7 @@ class EluiHeadComponent extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(this.bottom != null ? 91 : 45);
 }
 
-class _MyAppBarState extends State<EluiHeadComponent> {
+class _MyAppBarState extends State<EluiHeadComponent>  {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -57,7 +57,6 @@ class _MyAppBarState extends State<EluiHeadComponent> {
       ) : null,
       backgroundColor: widget.backgroundColor ?? Colors.white,
       elevation: 0,
-
       bottom: new AppBarBottom(
         child: widget.bottom,
       ),

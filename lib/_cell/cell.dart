@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 class EluiCellComponent extends StatefulWidget {
-  final IconData icons;
+  final Widget icons;
   final String title;
   final String label;
   final bool islink;
@@ -53,7 +53,7 @@ class EluiCellComponentState extends State<EluiCellComponent> {
                   widget.icons != null
                       ? Container(
                           margin: EdgeInsets.only(right: 10),
-                          child: Icon(widget.icons),
+                          child: widget.icons,
                         )
                       : Container(),
                   Container(

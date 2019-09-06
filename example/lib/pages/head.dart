@@ -14,9 +14,6 @@ class _headPageState extends State<headPage> {
         appBar: EluiHeadComponent(context: context, title: 'head'),
         body: ListView(
           children: <Widget>[
-            Container(
-              child: Text('233'),
-            )
           ],
         )
     );

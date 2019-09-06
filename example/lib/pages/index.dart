@@ -32,7 +32,8 @@ class _indexPageState extends State<indexPage> {
               ),
             ),
             EluiCellComponent(
-              title: 'head',
+              title: "head",
+              label: "头",
               islink: true,
               onTap: () {
                 Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
@@ -41,7 +42,8 @@ class _indexPageState extends State<indexPage> {
               },
             ),
             EluiCellComponent(
-              title: 'cell',
+              title: "cell",
+              label: "单元格",
               islink: true,
               onTap: () {
                 Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
@@ -50,7 +52,8 @@ class _indexPageState extends State<indexPage> {
               },
             ),
             EluiCellComponent(
-              title: 'tag',
+              title: "tag",
+              label: "标签",
               islink: true,
               onTap: () {
                 Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
@@ -59,14 +62,38 @@ class _indexPageState extends State<indexPage> {
               },
             ),
             EluiCellComponent(
-              title: 'head',
+              title: "button",
+              label: "按钮",
               islink: true,
               onTap: () {
                 Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
-                  return headPage();
+                  return buttonPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "message",
+              label: "全局消息",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return messagePage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "input",
+              label: "输入框",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return inputPage();
                 }));
               },
             )
+
+
+
           ],
         ));
   }

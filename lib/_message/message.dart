@@ -4,10 +4,12 @@ import 'dart:ui';
 class EluiMessageComponentWidget extends StatefulWidget {
   final Color color;
   final Widget child;
+  final Alignment align;
 
   EluiMessageComponentWidget({
     key,
     this.color,
+    this.align,
     @required this.child
   }) : super(key: key);
 
@@ -74,7 +76,7 @@ class EluiMessageComponentWidgetState extends State<EluiMessageComponentWidget> 
                   right: 15
                 ),
                 child: Align(
-                  alignment: Alignment.center,
+                  alignment: widget.align??Alignment.center,
                   child: DefaultTextStyle(
                     style: TextStyle(
                       color: Colors.white,
