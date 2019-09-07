@@ -53,7 +53,7 @@ class EluiButtonComponent extends StatefulWidget with _EluiButtonClass {
     this.child,
     ButtonSize size = ButtonSize.normal,
     this.hollow = false,
-    this.type,
+    this.type = ButtonType.none,
     this.theme,
     this.radius = false,
     this.disabled = false,
@@ -70,8 +70,10 @@ class EluiButtonComponent extends StatefulWidget with _EluiButtonClass {
 
 class EluiButtonTheme {
   final Color backgroundColor;
+  final double borderWidth;
+  final double borderRadius;
 
-  EluiButtonTheme({Key key, this.backgroundColor = null});
+  EluiButtonTheme({Key key, this.backgroundColor = null, this.borderWidth = 2, this.borderRadius = 2});
 }
 
 class _EluiButtonComponentState extends State<EluiButtonComponent> {
@@ -101,7 +103,7 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         'fontColor': Colors.white,
         'disabledBackgroundColor': theme.succeedColorDisabled,
         'borderColor': theme.succeedColorDisabled,
-        'hollowColor': Colors.transparent
+        'hollowColor': theme.succeedColor
       },
       // warning
       {
@@ -109,7 +111,7 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         'fontColor': Colors.white,
         'disabledBackgroundColor': theme.warnColorDisabled,
         'borderColor': theme.primaryColor,
-        'hollowColor': Colors.transparent
+        'hollowColor': theme.warnColor
       },
       // error
       {
@@ -117,7 +119,7 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         'fontColor': Colors.white,
         'disabledBackgroundColor': theme.errorColorDisabled,
         'borderColor': theme.warnColor,
-        'hollowColor': Colors.transparent
+        'hollowColor': theme.errorColor
       },
       // primary
       {
@@ -125,7 +127,7 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         'fontColor': Colors.white,
         'disabledBackgroundColor': theme.primaryColorDisabled,
         'borderColor': theme.warnColor,
-        'hollowColor': Colors.transparent
+        'hollowColor': theme.primaryColor
       }
     ];
 
@@ -196,18 +198,18 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
     // 是否禁用状态
     final bool disabled = widget.loading || widget.disabled;
     // 圆角
-    final BorderRadius borderRadius = BorderRadius.all(Radius.circular(widget.radius ? 100 : 4));
+    final BorderRadius borderRadius = BorderRadius.all(Radius.circular(widget.theme != null ? widget.theme.borderRadius : widget.radius ? 100 : 4));
     // 按钮
     final Widget button = Container(
         height: size['height'],
         padding: EdgeInsets.only(left: 10, right: 10),
         decoration: BoxDecoration(
-            color: disabled ? type['disabledBackgroundColor'] : widget.theme != null ? widget.theme.backgroundColor : null,
+            color: disabled ? type['disabledBackgroundColor'] : widget.theme != null ? widget.theme.backgroundColor : type['backgroundColor'],
             borderRadius: borderRadius,
             // 空心或者默认按钮才添加边框
             border: widget.hollow || widget.theme == ButtonType.none
                 ? Border.all(
-                    width: size['borderSize'], color: type['borderColor'])
+                    width: widget.theme != null ? widget.theme.borderWidth : size['borderSize'], color: type['borderColor'])
                 : null),
         child: renderChild(widget.child));
 

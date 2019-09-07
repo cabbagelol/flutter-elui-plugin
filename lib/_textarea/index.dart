@@ -16,7 +16,7 @@ class EluiTextareaComponent extends StatefulWidget {
   final Color color;
 
   EluiTextareaComponent({
-    this.title = '',
+    this.title,
     this.maxLines = 8,
     this.maxLength,
     this.placeholder = '请输入内容',
@@ -55,9 +55,9 @@ class _EluiTextareaComponentState extends State<EluiTextareaComponent> {
               child: Stack(
                 children: <Widget>[
                   Input(placeholder: widget.placeholder, maxLines: widget.maxLines, maxLength: widget.maxLength, onChanged: (val_) {
-                    print(val_);
+                    print(val_["value"]);
                     setState(() {
-                      _maxLengh = val_;
+                      _maxLengh = val_["value"];
                     });
                   }),
                   widget.maxLength != null ? Positioned(

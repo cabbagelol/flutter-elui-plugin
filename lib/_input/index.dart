@@ -12,25 +12,34 @@ class EluiInputComponent extends StatelessWidget {
   final String placeholder;
   final Widget icon;
   final Widget right;
+  final TextInputType type;
+  final bool Internalstyle;
+  final int maxLenght;
+  final Function onChanged;
   
-  EluiInputComponent({Key key,
+  EluiInputComponent({
+    Key key,
     this.title,
     this.value,
     this.placeholder = '',
     this.icon,
-    this.right});
+    this.right,
+    this.type,
+    this.maxLenght = null,
+    this.Internalstyle,
+    this.onChanged
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 20, right: 10, bottom: 20, left: 10),
+      padding: Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 20, right: 10, bottom: 20, left: 10),
       child: Row(
         children: <Widget>[
-          Container(
+          icon != null ? Container(
             margin: EdgeInsets.only(right: 10),
             child: icon,
-          ) ??
-              Container(),
+          ) : Container(),
           Container(
             margin: EdgeInsets.only(right: 10),
             child: Text(title ?? ''),
@@ -39,7 +48,14 @@ class EluiInputComponent extends StatelessWidget {
             flex: 2,
             child: Input(
               placeholder: placeholder,
-              value: value
+              value: value,
+              maxLength: maxLenght,
+              maxLengthEnforced: true,
+              onChanged: (value_) {
+                onChanged({
+                  "value": value_
+                });
+              }
             ),
           ),
           right ?? Container()
@@ -50,19 +66,25 @@ class EluiInputComponent extends StatelessWidget {
 }
 
 class Input extends StatefulWidget {
+  final focusNode;
   final placeholder;
   final maxLines;
   final maxLength;
   final contentPadding;
   final value;
+  final type;
+  final maxLengthEnforced;
   final Function onChanged;
 
   Input({
+    this.focusNode,
     this.placeholder,
     this.maxLines = 1,
     this.maxLength,
     this.contentPadding = const EdgeInsets.all(0),
     this.value,
+    this.type = TextInputType.text,
+    this.maxLengthEnforced = true,
     this.onChanged
   });
 
@@ -71,27 +93,26 @@ class Input extends StatefulWidget {
 }
 
 class InputState extends State<Input> {
-  TextEditingController _name = TextEditingController();
-  static var inputHeight = 0.0;
-
-  void setValue(value_) {
-    _name.text = value_;
-  }
+  // 控制器
+  final _name = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    this.setValue(widget.value);
+    _name.text = widget.value;
   }
 
   @override
   Widget build(BuildContext context) {
+//    widget._name.text = widget.value;
     return Container(
       child: TextField(
+        focusNode: widget.focusNode,
         style: TextStyle(fontSize: 15),
+        keyboardType: widget.type,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength,
-        maxLengthEnforced: true,
+        maxLengthEnforced: widget.maxLengthEnforced,
         decoration: InputDecoration(
             hintText: widget.placeholder,
             border: InputBorder.none,
@@ -99,11 +120,14 @@ class InputState extends State<Input> {
             filled: false,
             hasFloatingPlaceholder: false,
             contentPadding: widget.contentPadding,
-            counter: null
+            counter: null,
+            counterText: '',
         ),
         controller: _name,
         onChanged: (value_) {
-          widget.onChanged(value_);
+          widget.onChanged({
+            "value": value_
+          });
         },
       ),
     );

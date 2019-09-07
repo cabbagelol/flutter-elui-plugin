@@ -23,41 +23,21 @@ class Tip {
   Map<String, Color> type;
 
   // tip大小配置
-  List<Map<String, Color>> eluitip = [
-    { // none
-      "color": Colors.transparent,
-      "borderColor": Colors.transparent,
-      "textColor": Colors.transparent
-    },
-    { // suceed
-      "color": Color(0xffb3dde0),
-      "borderColor": Color(0xfff2f2f2),
-      "textColor": Color.fromRGBO(139, 195, 74, 0.2)
-    },
-    { // warning
-      "color": Color(0xfff5edd2),
-      "borderColor": Color(0xfff5edd2),
-      "textColor": Color(0xffffc107)
-    },
-    { // error
-      "color": Color(0xfff2f2f2),
-      "borderColor": Color(0xfff2f2f2),
-      "textColor": Color.fromRGBO(244, 67, 54, 0.2)
-    },
-  ];
+  List<Map<String, Color>> eluitip = [];
 }
 
 
 class EluiTipComponent extends StatefulWidget with Tip {
   final Widget child;
+  final String title;
   final Widget right;
 
   EluiTipComponent({
+    this.title,
     this.child,
     this.right,
     EluiTip type = EluiTip.none,
   }) {
-    this.type = eluitip[type.index];
     this.tipType = type;
   }
 
@@ -66,10 +46,35 @@ class EluiTipComponent extends StatefulWidget with Tip {
 }
 
 class _EluiTipComponentState extends State<EluiTipComponent> {
+  static var type;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final EluiTheme theme = EluiUi.getTheme(context);
+    widget.eluitip = [
+      { // none
+        "color": Colors.transparent,
+        "borderColor": Colors.transparent,
+        "textColor": Color(0xff000000)
+      },
+      { // suceed
+        "color": theme.succeedColorDisabled,
+        "borderColor": theme.succeedColor,
+        "textColor": theme.succeedColor
+      },
+      { // warning
+        "color": theme.warnColorDisabled,
+        "borderColor": theme.warnColor,
+        "textColor": theme.warnColor
+      },
+      { // error
+        "color": theme.errorColorDisabled,
+        "borderColor": theme.errorColor,
+        "textColor": theme.errorColor
+      },
+    ];
+    type = widget.eluitip[widget.tipType.index];
   }
 
   @override
@@ -77,51 +82,20 @@ class _EluiTipComponentState extends State<EluiTipComponent> {
     return Container(
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
       decoration: new BoxDecoration(
-        border: new Border.all(color: widget.type['borderColor'], width: 0.5), // 边色与边宽度
-        color: widget.type['color'],
+        border: new Border.all(color: type['borderColor'], width: 0.5), // 边色与边宽度
+        color: type['color'],
       ),
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: widget.child
+            child: widget.child??Text(widget.title.toString(), style: TextStyle(
+              color: type['textColor']
+            ))
           ),
           widget.right??Container()
          ],
       ),
-    );
-  }
-}
-
-
-// EluiTipTextComponent
-class EluiTipTextComponent extends StatefulWidget with Tip {
-  final title;
-
-  EluiTipTextComponent({
-    this.title,
-    EluiTip type = EluiTip.none,
-  }) {
-    this.type = eluitip[type.index];
-    this.tipType = type;
-  }
-
-  @override
-  _EluiTipTextComponentState createState() => _EluiTipTextComponentState();
-}
-
-class _EluiTipTextComponentState extends State<EluiTipTextComponent>  {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Text(
-          widget.title,
-          style: TextStyle(
-              color: widget.type['textColor']
-          ),
-        ),
-      ],
     );
   }
 }

@@ -5,10 +5,10 @@ import 'package:flutter_plugin_elui_example/router.dart';
 
 class indexPage extends StatefulWidget {
   @override
-  _indexPageState createState() => _indexPageState();
+  _indexpageState createState() => _indexpageState();
 }
 
-class _indexPageState extends State<indexPage> {
+class _indexpageState extends State<indexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,9 +90,47 @@ class _indexPageState extends State<indexPage> {
                   return inputPage();
                 }));
               },
-            )
-
-
+            ),
+            EluiCellComponent(
+              title: "textarea",
+              label: "多行输入框",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return textareaPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "img",
+              label: "图片",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return imgPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "numlndicator",
+              label: "数字指示器",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return numlndicatorPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "tip",
+              label: "提示",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return tipPage();
+                }));
+              },
+            ),
 
           ],
         ));

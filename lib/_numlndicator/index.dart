@@ -19,7 +19,7 @@ class EluiNumlndicatorComponent extends StatefulWidget {
 
   EluiNumlndicatorComponent(
       {this.value,
-      this.min = 0,
+      this.min,
       this.max,
       this.superposition = 1,
       this.longtag,
@@ -38,6 +38,11 @@ class _EluiNumlndicatorComponentState extends State<EluiNumlndicatorComponent> {
   TextStyle _textStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
   TextEditingController _contentController = new TextEditingController();
   FocusNode _contentFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _update(String type_) {
     var S_ = widget.superposition.toDouble();
@@ -60,6 +65,7 @@ class _EluiNumlndicatorComponentState extends State<EluiNumlndicatorComponent> {
   }
 
   void _setValue(value_) {
+    print(value_);
     setState(() {
       value = value_;
     });
@@ -69,6 +75,7 @@ class _EluiNumlndicatorComponentState extends State<EluiNumlndicatorComponent> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
+        Text(value.toString()),
         GestureDetector(
           child: Container(
             padding: EdgeInsets.all(10),
@@ -93,7 +100,8 @@ class _EluiNumlndicatorComponentState extends State<EluiNumlndicatorComponent> {
               decoration: BoxDecoration(
                   color: Color(0xfff2f2f2),
                   borderRadius: BorderRadius.circular(6.0)),
-              child: TextField(
+              child:
+              TextField(
                 focusNode: _contentFocusNode,
                 keyboardType: TextInputType.number,
                 onChanged: (res) {
@@ -109,6 +117,8 @@ class _EluiNumlndicatorComponentState extends State<EluiNumlndicatorComponent> {
                   hasFloatingPlaceholder: false,
                 ),
               ),
+
+
             )),
         GestureDetector(
           child: Container(

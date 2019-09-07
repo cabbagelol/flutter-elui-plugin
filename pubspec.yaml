@@ -14,6 +14,8 @@ dependencies:
   # 动画包
   flare_flutter: ^1.5.4
 
+  cached_network_image: 1.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -22,4 +24,3 @@ flutter:
   plugin:
     androidPackage: com.elui.flutter_plugin_elui
     pluginClass: FlutterPluginEluiPlugin
-
