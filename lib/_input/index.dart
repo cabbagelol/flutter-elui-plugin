@@ -6,7 +6,8 @@
 
 import 'package:flutter/material.dart';
 
-class EluiInputComponent extends StatelessWidget {
+class EluiInputComponent extends StatefulWidget {
+  final Map data;
   final String title;
   final String value;
   final String placeholder;
@@ -15,10 +16,11 @@ class EluiInputComponent extends StatelessWidget {
   final TextInputType type;
   final bool Internalstyle;
   final int maxLenght;
-  final Function onChanged;
-  
+  final Function onChange;
+
   EluiInputComponent({
     Key key,
+    this.data = const {},
     this.title,
     this.value,
     this.placeholder = '',
@@ -27,38 +29,113 @@ class EluiInputComponent extends StatelessWidget {
     this.type,
     this.maxLenght = null,
     this.Internalstyle,
-    this.onChanged
+    this.onChange
   });
+
+  @override
+  _EluiInputComponentState createState() => _EluiInputComponentState();
+}
+
+class _EluiInputComponentState extends State<EluiInputComponent> {
+  String _value;
+
+  /// 内部值长度
+  int _text = 0;
+
+  TextEditingController controller = TextEditingController();
+
+  TextInputAction textInputAction;
+
+  _EluiInputComponentState() {
+    _init();
+  }
+
+  // 初始化
+  _init() {
+    controller.addListener(() {
+      print("controller的监听方法：" + controller.text);
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((Duration time) {
+      _setValue(widget.value);
+    });
+  }
+
+  // 清除value
+  void _clearValue() {
+    _setValue('');
+    if (widget.onChange is Function) {
+      widget.onChange('');
+    }
+  }
+
+  // 输入框onChange
+  void _onChange(String value) {
+    if (widget.onChange is Function) {
+      widget.onChange({
+        "data": widget.data,
+        "value": value ?? ""
+      });
+    }
+    setState(() {});
+  }
+
+  void _setValue(value) {
+    setState(() {
+      controller.text = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 20, right: 10, bottom: 20, left: 10),
+      padding: widget.Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
       child: Row(
         children: <Widget>[
-          icon != null ? Container(
-            margin: EdgeInsets.only(right: 10),
-            child: icon,
-          ) : Container(),
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Text(title ?? ''),
-          ),
-          Expanded(
-            flex: 2,
-            child: Input(
-              placeholder: placeholder,
-              value: value,
-              maxLength: maxLenght,
-              maxLengthEnforced: true,
-              onChanged: (value_) {
-                onChanged({
-                  "value": value_
-                });
-              }
+          Offstage(
+            offstage: widget.icon == null,
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              child: widget.icon,
             ),
           ),
-          right ?? Container()
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: Text(widget.title ?? '', style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),),
+          ),
+          Expanded(
+            flex: 1,
+            child: Input(
+              placeholder: widget.placeholder,
+              controller: controller,
+              maxLength: widget.maxLenght,
+              maxLengthEnforced: true,
+              onChange: (value_) {
+                setState(() {
+                  _text = value_["value"].toString().length;
+                });
+                _onChange(value_["value"]);
+              },
+            ),
+          ),
+          Offstage(
+            offstage: _text <= 0,
+            child: GestureDetector(
+              child: Container(
+                child: Icon(Icons.cancel, size: 20, color: Colors.black38,),
+              ),
+              onTap: () {
+                controller.clear();
+                setState(() {
+                  _text = 0;
+                });
+              },
+            ),
+          ),
+          widget.right ?? Container()
         ],
       ),
     );
@@ -74,7 +151,8 @@ class Input extends StatefulWidget {
   final value;
   final type;
   final maxLengthEnforced;
-  final Function onChanged;
+  final Function onChange;
+  final controller;
 
   Input({
     this.focusNode,
@@ -85,7 +163,8 @@ class Input extends StatefulWidget {
     this.value,
     this.type = TextInputType.text,
     this.maxLengthEnforced = true,
-    this.onChanged
+    this.onChange,
+    this.controller
   });
 
   @override
@@ -97,35 +176,30 @@ class InputState extends State<Input> {
   final _name = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _name.text = widget.value;
-  }
-
-  @override
   Widget build(BuildContext context) {
-//    widget._name.text = widget.value;
     return Container(
       child: TextField(
         focusNode: widget.focusNode,
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(
+            fontSize: 15
+        ),
         keyboardType: widget.type,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength,
         maxLengthEnforced: widget.maxLengthEnforced,
         decoration: InputDecoration(
-            hintText: widget.placeholder,
-            border: InputBorder.none,
-            fillColor: Colors.transparent,
-            filled: false,
-            hasFloatingPlaceholder: false,
-            contentPadding: widget.contentPadding,
-            counter: null,
-            counterText: '',
+          hintText: widget.placeholder,
+          border: InputBorder.none,
+          fillColor: Colors.transparent,
+          filled: false,
+          hasFloatingPlaceholder: false,
+          contentPadding: widget.contentPadding,
+          counter: null,
+          counterText: '',
         ),
-        controller: _name,
+        controller: widget.controller ?? _name,
         onChanged: (value_) {
-          widget.onChanged({
+          widget.onChange({
             "value": value_
           });
         },

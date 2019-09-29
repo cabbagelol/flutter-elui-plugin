@@ -10,17 +10,27 @@ import 'package:flutter_plugin_elui/_input/index.dart';
 
 class EluiTextareaComponent extends StatefulWidget {
   final String title;
+
+  final String value;
+
   final int maxLines;
+
   final int maxLength;
+
   final String placeholder;
+
   final Color color;
+
+  final Function onChange;
 
   EluiTextareaComponent({
     this.title,
+    this.value = "",
     this.maxLines = 8,
     this.maxLength,
     this.placeholder = '请输入内容',
-    this.color = const Color(0xffeeeeee)
+    this.color = const Color(0xffeeeeee),
+    this.onChange
   });
 
   @override
@@ -33,7 +43,7 @@ class _EluiTextareaComponentState extends State<EluiTextareaComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 10),
+      margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,18 +64,18 @@ class _EluiTextareaComponentState extends State<EluiTextareaComponent> {
               ),
               child: Stack(
                 children: <Widget>[
-                  Input(placeholder: widget.placeholder, maxLines: widget.maxLines, maxLength: widget.maxLength, onChanged: (val_) {
-                    print(val_["value"]);
+                  Input(placeholder: widget.placeholder, maxLines: widget.maxLines, maxLength: widget.maxLength, onChange: (val_) {
                     setState(() {
                       _maxLengh = val_["value"];
                     });
+                    widget.onChange(val_["value"]);
                   }),
                   widget.maxLength != null ? Positioned(
                     right: 0,
                     bottom: 0,
                     child: Container(
                       color: widget.color,
-                      child: Text('剩余${widget.maxLength - _maxLengh.toString().length}字'),
+                      child: Text('剩余${widget.maxLength - _maxLengh.toString().length}字',),
                     )
                   ) : Container()
                 ],

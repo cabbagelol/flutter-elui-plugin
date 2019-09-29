@@ -131,7 +131,46 @@ class _indexpageState extends State<indexPage> {
                 }));
               },
             ),
-
+            EluiCellComponent(
+              title: "popup",
+              label: "弹窗",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return popupPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "radio",
+              label: "单选",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return radioPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "checkbox",
+              label: "复选",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return checkboxPage();
+                }));
+              },
+            ),
+            EluiCellComponent(
+              title: "countdown",
+              label: "倒计时",
+              islink: true,
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return countdownPage();
+                }));
+              },
+            ),
           ],
         ));
   }

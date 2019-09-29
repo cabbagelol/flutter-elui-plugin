@@ -6,13 +6,20 @@
 
 import 'package:flutter/material.dart';
 
+import '../_theme/index.dart';
 
-// 很难看版本
 class EluiCheckboxComponent extends StatefulWidget {
   final Function onChanged;
+  final bool checked;
   final Widget child;
+  final Color color;
 
-  EluiCheckboxComponent({this.onChanged, this.child});
+  EluiCheckboxComponent({
+    this.onChanged,
+    this.child,
+    this.checked = false,
+    this.color,
+  });
 
   @override
   _EluiCheckboxComponentState createState() => _EluiCheckboxComponentState();
@@ -25,7 +32,19 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
     setState(() {
       _checkBoxSelected = value;
     });
+    if (widget.onChanged == null) {
+      return;
+    }
     widget.onChanged(_checkBoxSelected);
+  }
+
+  EluiTheme theme;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    theme = EluiUi.getTheme(context);
   }
 
   @override
@@ -37,13 +56,14 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
         },
         child: Row(
           children: <Widget>[
-            Checkbox(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                value: _checkBoxSelected,
-                onChanged: (value) {
-                  _handleCheckBox(value);
-                }),
-            widget.child ?? Container()
+            Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: _checkboxItem(
+                check: _checkBoxSelected,
+                color: widget.color ?? theme.primaryColor,
+              ),
+            ),
+            widget.child ?? Container(),
           ],
         ),
       ),
@@ -51,87 +71,38 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
   }
 }
 
-// 自定义
-class CustomCheckBox extends StatefulWidget {
-  // 是否是选中状态.
-  bool isChecked;
-  // 非选中状态icon.
-  String nomalImagePath;
-  // 选中状态icon.
-  String checkedImagePath;
-  // 选择后的构建
-  CheckWidget onCheck;
-  //左侧文本
-  Text leftText;
-  //右侧文本
-  Text rightText;
+class _checkboxItem extends StatelessWidget {
+  final bool check;
+  final Color color;
 
-  CustomCheckBox(
-      {@required this.nomalImagePath,
-        @required this.checkedImagePath,
-        this.isChecked = true,
-        this.onCheck,
-        this.leftText,
-        this.rightText});
-
-  var state;
-
-  @override
-  State<StatefulWidget> createState() {
-    state = CustomCheckBoxState(isChecked, nomalImagePath, checkedImagePath,
-        onCheck, leftText, rightText);
-    return state;
-  }
-
-  bool checked() {
-    return state.isChecked;
-  }
-}
-
-class CustomCheckBoxState extends State<CustomCheckBox> {
-  bool isChecked;
-  String nomalImagePath;
-  String checkedImagePath;
-  CheckWidget onCheck;
-  Text leftText;
-  Text rightText;
-
-  CustomCheckBoxState(
-      bool isChecked,
-      String nomalImagePath,
-      String checkedImagePath,
-      CheckWidget onCheck,
-      Text leftText,
-      Text rightText) {
-    this.isChecked = isChecked;
-    this.nomalImagePath = nomalImagePath;
-    this.checkedImagePath = checkedImagePath;
-    this.onCheck = onCheck;
-    this.leftText = leftText;
-    this.rightText = rightText;
-  }
+  _checkboxItem({
+    this.check,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-        child: new GestureDetector(
-          child: new Row(
-            children: <Widget>[
-              (leftText != null) ? leftText : Text(''),
-              new Image.asset(isChecked ? checkedImagePath : nomalImagePath),
-              (rightText != null) ? rightText : Text(''),
-            ],
-          ),
-          onTap: () {
-            setState(() {
-              isChecked = !isChecked;
-            });
-            if (onCheck != null) {
-              onCheck(isChecked);
-            }
-          },
-        ));
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+      child: Container(
+        decoration: BoxDecoration(
+          color: !check ? color : Colors.black12,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: !check
+              ? Icon(
+                  Icons.check,
+                  size: 18.0,
+                  color: Colors.white,
+                )
+              : Icon(
+                  Icons.check,
+                  size: 18.0,
+                  color: Colors.transparent,
+                ),
+        ),
+      ),
+    );
   }
 }
-
-typedef CheckWidget = void Function(bool checked);

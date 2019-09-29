@@ -10,3 +10,7 @@ export 'pages/textarea.dart';
 export 'pages/img.dart';
 export 'pages/numlndicator.dart';
 export 'pages/tip.dart';
+export 'pages/popup.dart';
+export 'pages/radio.dart';
+export 'pages/checkbox.dart';
+export 'pages/countdown.dart';

@@ -11,7 +11,7 @@ class _tipPageState extends State<tipPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: EluiHeadComponent(context: context, title: '提示'),
+        appBar: EluiHeadComponent(context: context, title: '提示1'),
         body: ListView(
           children: <Widget>[
             EluiCellComponent(
@@ -40,7 +40,7 @@ class _tipPageState extends State<tipPage> {
               cont: EluiTipComponent(
                 title: '233',
                 right: Container(
-                  child: Text('自定'),
+                  child: Icon(Icons.close),
                 ),
               ),
             ),

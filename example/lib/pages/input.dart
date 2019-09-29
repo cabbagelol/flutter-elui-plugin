@@ -18,7 +18,7 @@ class _inputPageState extends State<inputPage> {
               title: "值",
               label: "设置初始值",
               cont: EluiInputComponent(
-                  value: "内容", icon: Icon(Icons.warning), Internalstyle: true, onChanged: (value_) {
+                  value: "内容", icon: Icon(Icons.warning), Internalstyle: true, onChange: (value_) {
                     print(value_);
               },),
             ),

@@ -1,3 +1,7 @@
+/**
+ * by https://github.com/allan-hx/flutter-weui/blob/master/weui/lib/drawer/drawer.dart
+ */
+
 import 'package:flutter/material.dart';
 import '../utils.dart';
 import './drawer.dart';
@@ -10,7 +14,9 @@ typedef ShowDrawer = Function({
   // 遮罩层点击关闭
   bool maskClosable,
   // 方向
-  DrawerPlacement placement,
+  EluiPopupPlacement placement,
+  // 控件主题
+  EluiPopupTheme theme,
   // 内容
   @required Widget child
 });
@@ -22,8 +28,9 @@ ShowDrawer EluiPopupComponent(BuildContext context) {
   CloseDrawer showDrawer ({
     mask = true,
     maskClosable = true,
-    placement = DrawerPlacement.left,
+    placement = EluiPopupPlacement.left,
     onClose,
+    theme = null,
     child
   }) {
     Function remove;
@@ -39,15 +46,16 @@ ShowDrawer EluiPopupComponent(BuildContext context) {
     }
 
     remove = createOverlayEntry(
-      context: context,
-      child: DrawerWidget(
-        key: widgetKey,
-        mask: mask,
-        placement: placement,
-        maskClick: maskClosable ? close : null,
-        child: child
-      ),
-      willPopCallback: close
+        context: context,
+        child: DrawerWidget(
+            key: widgetKey,
+            mask: mask,
+            placement: placement,
+            popupTheme: theme,
+            maskClick: maskClosable ? close : null,
+            child: child
+        ),
+        willPopCallback: close
     );
 
     return close;

@@ -3,28 +3,17 @@ import '../_animation/fade_in.dart';
 import 'package:flutter_plugin_elui/_theme/index.dart';
 
 // 方向
-enum DrawerPlacement {
-  top,
-  right,
-  bottom,
-  left
-}
+enum EluiPopupPlacement { top, right, bottom, left }
 
 class DrawerWidget extends StatefulWidget {
-  final DrawerPlacement placement;
+  final EluiPopupPlacement placement;
   final Widget child;
   final bool mask;
   final Function() maskClick;
   final int duration;
+  final EluiPopupTheme popupTheme;
 
-  DrawerWidget({
-    key,
-    this.placement,
-    this.mask,
-    this.maskClick,
-    this.duration = 150,
-    @required this.child
-  }) : super(key: key);
+  DrawerWidget({key, this.placement, this.mask, this.maskClick, this.duration = 150, @required this.child, this.popupTheme}) : super(key: key);
 
   @override
   DrawerWidgetState createState() => DrawerWidgetState();
@@ -33,30 +22,28 @@ class DrawerWidget extends StatefulWidget {
 class DrawerWidgetState extends State<DrawerWidget> with TickerProviderStateMixin {
   GlobalKey boxKey = GlobalKey();
   AnimationController controller;
+
   //高度动画
   Animation<double> offsetAnimation;
+
   // 是否垂直
   bool isVertical;
+
+  // 主题
   EluiTheme theme;
+
+//  // 控件主题
+//  EluiPopupTheme popupTheme;
 
   @override
   void initState() {
     super.initState();
     // 判断方向
-    isVertical = [DrawerPlacement.top, DrawerPlacement.bottom].indexOf(widget.placement) >= 0;
+    isVertical = [EluiPopupPlacement.top, EluiPopupPlacement.bottom].indexOf(widget.placement) >= 0;
 
-    controller = AnimationController(
-      duration: Duration(milliseconds: widget.duration),
-      vsync: this
-    );
+    controller = AnimationController(duration: Duration(milliseconds: widget.duration), vsync: this);
 
-    offsetAnimation = Tween<double>(begin: 2000, end: 0)
-      .animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.ease
-        )
-      );
+    offsetAnimation = Tween<double>(begin: 2000, end: 0).animate(CurvedAnimation(parent: controller, curve: Curves.ease));
 
     WidgetsBinding.instance.addPostFrameCallback(getBoxHeight);
   }
@@ -83,24 +70,18 @@ class DrawerWidgetState extends State<DrawerWidget> with TickerProviderStateMixi
     double begin;
     // 方向判断
     switch (widget.placement) {
-      case DrawerPlacement.top:
-      case DrawerPlacement.left:
+      case EluiPopupPlacement.top:
+      case EluiPopupPlacement.left:
         begin = -size;
         break;
-      case DrawerPlacement.right:
-      case DrawerPlacement.bottom:
+      case EluiPopupPlacement.right:
+      case EluiPopupPlacement.bottom:
         begin = size;
         break;
     }
 
-    offsetAnimation = Tween<double>(begin: begin, end: 0)
-      .animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.ease
-        )
-      );
-    // 播放动画
+    offsetAnimation = Tween<double>(begin: begin, end: 0).animate(CurvedAnimation(parent: controller, curve: Curves.ease));
+    /// 播放动画
     controller.forward();
   }
 
@@ -112,77 +93,78 @@ class DrawerWidgetState extends State<DrawerWidget> with TickerProviderStateMixi
     double bottom = 0.0;
     double left = 0.0;
 
-    // 判断方向
+    /// 判断方向
     switch (widget.placement) {
-      case DrawerPlacement.top:
+      case EluiPopupPlacement.top:
         bottom = null;
         break;
-      case DrawerPlacement.right:
+      case EluiPopupPlacement.right:
         left = null;
         break;
-      case DrawerPlacement.bottom:
+      case EluiPopupPlacement.bottom:
         top = null;
         break;
-      case DrawerPlacement.left:
+      case EluiPopupPlacement.left:
         right = null;
         break;
     }
 
     return AnimatedBuilder(
-      animation: controller,
-      builder: (BuildContext context, Widget child) {
-        // 方向
-        if (isVertical) {
-          offset = Offset(0, offsetAnimation.value);
-        } else {
-          offset = Offset(offsetAnimation.value, 0);
-        }
+        animation: controller,
+        builder: (BuildContext context, Widget child) {
+          /// 方向
+          if (isVertical) {
+            offset = Offset(0, offsetAnimation.value);
+          } else {
+            offset = Offset(offsetAnimation.value, 0);
+          }
 
-        final List<Widget> children = [
-          Positioned(
-            top: top,
-            right: right,
-            bottom: bottom,
-            left: left,
-            child: Transform.translate(
-              offset: offset,
-              child: DecoratedBox(
-                key: boxKey,
-                decoration: BoxDecoration(
-                  color: Colors.white
-                ),
-                child: widget.child
-              )
-            )
-          )
-        ];
-
-        // 判断是否添加遮罩
-        if (widget.mask) {
-          children.insert(0, Positioned(
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            child: FadeIn(
-              autoPlay: false,
-              controller: controller,
-              child: GestureDetector(
-                onTap: widget.maskClick,
+          final List<Widget> children = [
+            Positioned(
+              top: top,
+              right: right,
+              bottom: bottom,
+              left: left,
+              child: Transform.translate(
+                offset: offset,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: theme.maskColor
-                  )
-                )
-              )
-            )
-          ));
-        }
+                    key: boxKey, decoration: BoxDecoration(color: widget.popupTheme != null ? widget.popupTheme.popupBackgroundColor : Colors.transparent), child: widget.child),
+              ),
+            ),
+          ];
 
-        return Stack(
-          children: children
-        );
-      }
-    );
+          // 判断是否添加遮罩
+          if (widget.mask) {
+            children.insert(
+              0,
+              Positioned(
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                child: FadeIn(
+                  autoPlay: false,
+                  controller: controller,
+                  child: GestureDetector(
+                    onTap: widget.maskClick,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: widget.popupTheme != null ? widget.popupTheme.maskBackgroundColor : theme.maskColor),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return Stack(children: children);
+        });
   }
+}
+
+// 主题
+class EluiPopupTheme {
+  final Color popupBackgroundColor;
+  final Color maskBackgroundColor;
+
+  EluiPopupTheme({this.popupBackgroundColor = null, this.maskBackgroundColor = null});
 }

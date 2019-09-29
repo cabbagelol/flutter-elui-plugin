@@ -4,6 +4,12 @@
 
 import 'package:flutter/material.dart';
 
+class EluiCellTextAlign {
+  static const CrossAxisAlignment left = CrossAxisAlignment.start;
+  static const CrossAxisAlignment center = CrossAxisAlignment.center;
+  static const CrossAxisAlignment right = CrossAxisAlignment.end;
+}
+
 class EluiCellComponent extends StatefulWidget {
   final Widget icons;
   final String title;
@@ -11,16 +17,18 @@ class EluiCellComponent extends StatefulWidget {
   final bool islink;
   final bool isBotton;
   final Widget cont;
+  final CrossAxisAlignment textAlign;
   final GestureTapCallback onTap;
 
-  EluiCellComponent(
-      {this.icons,
-      this.title,
-      this.islink = false,
-      this.isBotton = false,
-      this.label,
-      this.cont,
-      this.onTap});
+  EluiCellComponent({this.icons,
+    this.title,
+    this.islink = false,
+    this.isBotton = false,
+    this.label,
+    this.cont,
+    this.textAlign = EluiCellTextAlign.center,
+    this.onTap,
+  });
 
   @override
   State<EluiCellComponent> createState() {
@@ -46,22 +54,26 @@ class EluiCellComponentState extends State<EluiCellComponent> {
           color: Colors.white,
           padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: widget.textAlign,
             children: <Widget>[
               Row(
                 children: <Widget>[
                   widget.icons != null
                       ? Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: widget.icons,
-                        )
+                    margin: EdgeInsets.only(right: 10),
+                    child: widget.icons,
+                  )
                       : Container(),
                   Container(
                     margin: EdgeInsets.only(right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(widget.title),
+                        Text(widget.title, style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15
+                        )),
                         widget.label != null
                             ? Text(
                           widget.label,

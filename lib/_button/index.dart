@@ -8,7 +8,7 @@ import '../_icon/index.dart';
 enum ButtonType { none, succeed, warning, error, primary }
 
 // size
-enum ButtonSize { mini, normal,large }
+enum ButtonSize { mini, normal, large }
 
 class _EluiButtonClass {
   // 按钮大小类型
@@ -73,7 +73,7 @@ class EluiButtonTheme {
   final double borderWidth;
   final double borderRadius;
 
-  EluiButtonTheme({Key key, this.backgroundColor = null, this.borderWidth = 2, this.borderRadius = 2});
+  EluiButtonTheme({Key key, this.backgroundColor = null, this.borderWidth = 2, this.borderRadius = 2,});
 }
 
 class _EluiButtonComponentState extends State<EluiButtonComponent> {
@@ -169,15 +169,15 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
     List<Widget> children = [
       DefaultTextStyle(
           style:
-              TextStyle(fontSize: size['fontSize'], color: type['fontColor']),
-          child: child)
+          TextStyle(fontSize: size['fontSize'], color: type['fontColor']),
+          child: child,)
     ];
 
     if (widget.loading) {
       final Widget icon = Padding(
           padding: EdgeInsets.only(right: 5),
           child: Rotating(Icon(WeIcons.loading,
-              color: type['fontColor'], size: size['iconSize'])));
+              color: type['fontColor'], size: size['iconSize']),),);
       children.insert(0, icon);
     }
 
@@ -188,7 +188,7 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
             mainAxisSize: widget.sizeType == ButtonSize.mini
                 ? MainAxisSize.min
                 : MainAxisSize.max,
-            children: children));
+            children: children,),);
   }
 
   @override
@@ -209,9 +209,9 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
             // 空心或者默认按钮才添加边框
             border: widget.hollow || widget.theme == ButtonType.none
                 ? Border.all(
-                    width: widget.theme != null ? widget.theme.borderWidth : size['borderSize'], color: type['borderColor'])
+                width: widget.theme != null ? widget.theme.borderWidth : size['borderSize'], color: type['borderColor'])
                 : null),
-        child: renderChild(widget.child));
+        child: renderChild(widget.child),);
 
     // 禁用状态
     if (disabled) {
@@ -222,6 +222,6 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         borderRadius: borderRadius,
         color: type['backgroundColor'],
         child:
-            InkWell(onTap: onClick, borderRadius: borderRadius, child: button));
+        InkWell(onTap: onClick, borderRadius: borderRadius, child: button));
   }
 }

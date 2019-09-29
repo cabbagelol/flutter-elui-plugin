@@ -21,9 +21,7 @@ class _messagePageState extends State<messagePage> {
                 type: ButtonType.none,
                 child: Text("标准消息提示"),
                 onTap: () {
-                  EluiMessageComponent.show(context)(child: Text('内容', style: TextStyle(
-                    color: Colors.black
-                  )));
+                  EluiMessageComponent.show(context)(child: Text('内容', style: TextStyle(color: Colors.black)));
                 },
               ),
             ),
@@ -34,15 +32,31 @@ class _messagePageState extends State<messagePage> {
                 type: ButtonType.primary,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("自定义消息提示"),
-                    Text("设置黑色背影颜色,居左中", style: TextStyle(
-                      fontSize: 10
-                    ))
-                  ],
+                  children: <Widget>[Text("自定义消息提示"), Text("设置黑色背影颜色,居左中", style: TextStyle(fontSize: 10))],
                 ),
                 onTap: () {
-                  EluiMessageComponent.show(context)(color: Colors.black, align: Alignment.centerLeft, child: Text('内容'));
+                  EluiMessageComponent.show(context)(
+                    color: Colors.black,
+                    align: Alignment.centerLeft,
+                    child: Text('内容'),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+              child: EluiButtonComponent(
+                radius: true,
+                type: ButtonType.primary,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[Text("持续更久"), Text("设置显示时间", style: TextStyle(fontSize: 10))],
+                ),
+                onTap: () {
+                  EluiMessageComponent.success(context)(
+                    child: Text('10秒'),
+                    time: 1000 * 10,
+                  );
                 },
               ),
             ),

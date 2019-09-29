@@ -64,9 +64,9 @@ class _EluiTipComponentState extends State<EluiTipComponent> {
         "textColor": theme.succeedColor
       },
       { // warning
-        "color": theme.warnColorDisabled,
-        "borderColor": theme.warnColor,
-        "textColor": theme.warnColor
+        "color": theme.warnColorBackground,
+        "borderColor": Color(0xfff5edd2),
+        "textColor": Color(0xffc59b0b)
       },
       { // error
         "color": theme.errorColorDisabled,
@@ -80,7 +80,7 @@ class _EluiTipComponentState extends State<EluiTipComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
       decoration: new BoxDecoration(
         border: new Border.all(color: type['borderColor'], width: 0.5), // 边色与边宽度
         color: type['color'],
@@ -90,7 +90,8 @@ class _EluiTipComponentState extends State<EluiTipComponent> {
           Expanded(
             flex: 1,
             child: widget.child??Text(widget.title.toString(), style: TextStyle(
-              color: type['textColor']
+              color: type['textColor'],
+              fontSize: 15
             ))
           ),
           widget.right??Container()

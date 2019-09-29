@@ -9,12 +9,12 @@ class EluiHeadComponent extends StatefulWidget implements PreferredSizeWidget {
   final PreferredSizeWidget bottom;
   final String title;
   final bool centerTitle;
-  BuildContext context;
   final List<Widget> actions;
   final TextStyle titleStyle;
   final Color backgroundColor;
   final String backImgName;
   final bool isBack;
+  BuildContext context;
 
   EluiHeadComponent({
     this.bottom,
