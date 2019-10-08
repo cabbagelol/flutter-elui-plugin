@@ -99,7 +99,7 @@ class Picker {
       {this.adapter,
         this.delimiter,
         this.selecteds,
-        this.height = 200.0,
+        this.height = 280.0,
         this.itemExtent = 28.0,
         this.columnPadding,
         this.textStyle,

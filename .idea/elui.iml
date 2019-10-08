@@ -69,6 +69,9 @@
       <excludeFolder url="file://$MODULE_DIR$/example/ios/Flutter/App.framework/flutter_assets/packages" />
       <excludeFolder url="file://$MODULE_DIR$/flutter_plugin_elui/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/flutter_plugin_elui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
