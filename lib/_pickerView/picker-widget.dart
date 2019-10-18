@@ -14,9 +14,11 @@ const bool __printDebug = false;
 /// Picker selected callback.
 typedef PickerSelectedCallback = void Function(
     Picker picker, int index, List<int> selecteds);
+
 /// Picker confirm callback.
 typedef PickerConfirmCallback = void Function(
     Picker picker, List<int> selecteds);
+
 /// Picker value format callback.
 typedef PickerValueFormat<T> = String Function(T value);
 
@@ -47,13 +49,15 @@ class PickerLocalizations {
 
   Object getItem(String key) {
     Map localData;
-    if (locale != null)  localData = localizedValues[locale.languageCode];
+    if (locale != null) localData = localizedValues[locale.languageCode];
     if (localData == null) return localizedValues['zh'][key];
     return localData[key];
   }
 
   String get cancelText => getItem("cancelText");
+
   String get confirmText => getItem("confirmText");
+
   List get ampm => getItem("ampm");
 }
 
@@ -95,39 +99,39 @@ class Picker {
   Widget _widget;
   PickerWidgetState _state;
 
-  Picker(
-      {this.adapter,
-        this.delimiter,
-        this.selecteds,
-        this.height = 280.0,
-        this.itemExtent = 28.0,
-        this.columnPadding,
-        this.textStyle,
-        this.cancelTextStyle,
-        this.confirmTextStyle,
-        this.selectedTextStyle,
-        this.textAlign = TextAlign.start,
-        this.textScaleFactor,
-        this.title,
-        this.cancel,
-        this.confirm,
-        this.cancelText,
-        this.confirmText,
-        this.backgroundColor = Colors.white,
-        this.containerColor,
-        this.headercolor,
-        this.changeToFirst = false,
-        this.hideHeader = false,
-        this.looping = false,
-        this.headerDecoration,
-        this.columnFlex,
-        this.footer,
-        this.onCancel,
-        this.onSelect,
-        this.onConfirm})
+  Picker({this.adapter,
+    this.delimiter,
+    this.selecteds,
+    this.height = 280.0,
+    this.itemExtent = 28.0,
+    this.columnPadding,
+    this.textStyle,
+    this.cancelTextStyle,
+    this.confirmTextStyle,
+    this.selectedTextStyle,
+    this.textAlign = TextAlign.start,
+    this.textScaleFactor,
+    this.title,
+    this.cancel,
+    this.confirm,
+    this.cancelText,
+    this.confirmText,
+    this.backgroundColor = Colors.white,
+    this.containerColor,
+    this.headercolor,
+    this.changeToFirst = false,
+    this.hideHeader = false,
+    this.looping = false,
+    this.headerDecoration,
+    this.columnFlex,
+    this.footer,
+    this.onCancel,
+    this.onSelect,
+    this.onConfirm})
       : assert(adapter != null);
 
   Widget get widget => _widget;
+
   PickerWidgetState get state => _state;
   int _maxLevel = 1;
 
@@ -150,10 +154,10 @@ class Picker {
   /// 显示模态 picker
   Future<T> showModal<T>(BuildContext context, [ThemeData themeData]) async {
     return await showModalBottomSheet<T>(
-        context: context, //state.context,
-        builder: (BuildContext context) {
-          return makePicker(themeData, true);
-        });
+      context: context, //state.context,
+      builder: (BuildContext context) {
+        return makePicker(themeData, true);
+      },);
   }
 
 
@@ -165,7 +169,9 @@ class Picker {
           List<Widget> actions = [];
 
           if (cancel == null) {
-            String _cancelText = cancelText ?? PickerLocalizations.of(context).cancelText;
+            String _cancelText = cancelText ?? PickerLocalizations
+                .of(context)
+                .cancelText;
             if (_cancelText != null && _cancelText != "") {
               actions.add(FlatButton(
                   onPressed: () {
@@ -179,7 +185,9 @@ class Picker {
           }
 
           if (confirm == null) {
-            String _confirmText = confirmText ?? PickerLocalizations.of(context).confirmText;
+            String _confirmText = confirmText ?? PickerLocalizations
+                .of(context)
+                .confirmText;
             if (_confirmText != null && _confirmText != "") {
               actions.add(FlatButton(
                   onPressed: () {
@@ -226,6 +234,7 @@ class Picker {
 class PickerDelimiter {
   final Widget child;
   final int column;
+
   PickerDelimiter({this.child, this.column = 1}) : assert(child != null);
 }
 
@@ -247,6 +256,7 @@ class _PickerWidget<T> extends StatefulWidget {
   final Picker picker;
   final ThemeData themeData;
   final bool isModal;
+
   _PickerWidget({Key key, @required this.picker, @required this.themeData, this.isModal})
       : super(key: key);
 
@@ -258,6 +268,7 @@ class _PickerWidget<T> extends StatefulWidget {
 class PickerWidgetState<T> extends State<_PickerWidget> {
   final Picker picker;
   final ThemeData themeData;
+
   PickerWidgetState({Key key, @required this.picker, @required this.themeData});
 
   ThemeData theme;
@@ -321,7 +332,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
           color: theme.accentColor, fontSize: Picker.DefaultTextSize
       ), child: picker.cancel));
     } else {
-      String _cancelText = picker.cancelText ?? PickerLocalizations.of(context).cancelText;
+      String _cancelText = picker.cancelText ?? PickerLocalizations
+          .of(context)
+          .cancelText;
       if (_cancelText != null || _cancelText != "") {
         items.add(FlatButton(
             onPressed: () {
@@ -354,7 +367,9 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
           color: theme.accentColor, fontSize: Picker.DefaultTextSize
       ), child: picker.confirm));
     } else {
-      String _confirmText = picker.confirmText ?? PickerLocalizations.of(context).confirmText;
+      String _confirmText = picker.confirmText ?? PickerLocalizations
+          .of(context)
+          .confirmText;
       if (_confirmText != null || _confirmText != "") {
         items.add(FlatButton(
             onPressed: () {
@@ -423,30 +438,56 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
                       picker.onSelect(picker, i, picker.selecteds);
                   });
                 },
-                children: List<Widget>.generate(_length, (int index) {
+                children: List < Widget
+                >
+                .
+                generate
+                (
+                _length, (int index) {
               return adapter.buildItem(context, index);
             }),
           ),
-        ),
+        ),);
+    items
+        .
+    add
+    (
+    view
     );
-    items.add(view);
-    adapter.setColumn(i);
+    adapter
+        .
+    setColumn
+    (
+    i
+    );
     }
     }
-    if (picker.delimiter != null) {
-    for (int i = 0; i < picker.delimiter.length; i++) {
+    if
+    (
+    picker
+        .
+    delimiter
+    !=
+    null
+    )
+    {
+    for (int i = 0; i < picker
+        .delimiter.length; i++)
+    {
     var o = picker.delimiter[i];
     if (o.child == null) continue;
     var item = Container(child: o.child, height: picker.height);
     if (o.column < 0)
     items.insert(0, item);
-    else if (o.column >= items.length)
+    else
+    if (o.column >= items.length)
     items.add(item);
     else
     items.insert(o.column, item);
     }
     }
-    return items;
+    return
+    items;
   }
 
   void updateScrollController(int i) {
@@ -468,9 +509,13 @@ abstract class PickerAdapter<T> {
   Picker picker;
 
   int getLength();
+
   int getMaxLevel();
+
   void setColumn(int index);
+
   void initSelects();
+
   Widget buildItem(BuildContext context, int index);
 
   Widget makeText(Widget child, String text, bool isSel) {
@@ -530,6 +575,7 @@ abstract class PickerAdapter<T> {
   }
 
   void doShow() {}
+
   void doSelect(int column, int index) {}
 
   int getColumnFlex(int column) {
@@ -539,7 +585,9 @@ abstract class PickerAdapter<T> {
   }
 
   int get maxLevel => getMaxLevel();
+
   int get length => getLength();
+
   String get text => getText();
 
   // 是否联动，即后面的列受前面列数据影响
@@ -692,7 +740,8 @@ class PickerDataAdapter<T> extends PickerAdapter<T> {
   void initSelects() {
     if (picker.selecteds == null || picker.selecteds.length == 0) {
       if (picker.selecteds == null) picker.selecteds = new List<int>();
-      for (int i = 0; i < _maxLevel; i++) picker.selecteds.add(0);
+      for (int i = 0; i < _maxLevel; i++)
+        picker.selecteds.add(0);
     }
   }
 
@@ -883,8 +932,10 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
   final int yearBegin, yearEnd;
   final DateTime minValue, maxValue;
   final String yearSuffix, monthSuffix, daySuffix;
+
   /// use two-digit year, 2019, displayed as 19
   final bool twoDigitYear;
+
   /// year 0, month 1, day 2, hour 3, minute 4, sec 5, am/pm 6, hour-ap: 7
   final List<int> customColumnType;
 
@@ -1036,7 +1087,8 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
     int _maxLevel = getMaxLevel();
     if (picker.selecteds == null || picker.selecteds.length == 0) {
       if (picker.selecteds == null) picker.selecteds = new List<int>();
-      for (int i = 0; i < _maxLevel; i++) picker.selecteds.add(0);
+      for (int i = 0; i < _maxLevel; i++)
+        picker.selecteds.add(0);
     }
   }
 
@@ -1068,16 +1120,18 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
         _text = "${intToStr(index)}";
         break;
       case 6:
-        List _ampm = strAMPM ?? PickerLocalizations.of(context).ampm;
+        List _ampm = strAMPM ?? PickerLocalizations
+            .of(context)
+            .ampm;
         if (_ampm == null) _ampm = const ['AM', 'PM'];
         _text = "${_ampm[index]}";
         break;
       case 7:
-        _text = "${intToStr(index+1)}";
+        _text = "${intToStr(index + 1)}";
         break;
     }
 
-    return makeText(null, _text, picker.selecteds[_col]==index);
+    return makeText(null, _text, picker.selecteds[_col] == index);
   }
 
   @override
@@ -1186,7 +1240,6 @@ class DateTimePickerAdapter extends PickerAdapter<DateTime> {
       value = maxValue;
       notifyDataChanged();
     }
-
   }
 
   int _getAPColIndex() {

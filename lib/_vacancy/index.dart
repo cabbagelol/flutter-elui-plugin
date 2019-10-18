@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 class EluiVacancyComponent extends StatefulWidget {
   final String title;
+
   final Widget cont;
+
   final double height;
 
   EluiVacancyComponent({this.title, this.cont, this.height = null,});
@@ -32,7 +34,7 @@ class _EluiVacancyComponentState extends State<EluiVacancyComponent> {
                   fontSize: 16,
                   color: Color(0xff555555)
               )),
-              padding: EdgeInsets.only(top: 15),
+              padding: EdgeInsets.only(top: widget.cont == null ? 0 : 15),
             )
           ],
         ),

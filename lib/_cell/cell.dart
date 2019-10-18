@@ -71,7 +71,7 @@ class EluiCellComponentState extends State<EluiCellComponent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(bottom: 5),
+                          padding: EdgeInsets.only(bottom: widget.label != null ? 5 : 0),
                           child: Text(widget.title, style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15

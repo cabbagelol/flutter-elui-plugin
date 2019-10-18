@@ -51,17 +51,41 @@ class EluiMessageComponentWidgetState extends State<EluiMessageComponentWidget> 
   Widget build(BuildContext context) {
     return Stack(children: [
       Positioned(
-          left: 0,
-          top: 0,
-          right: 0,
-          child: FractionalTranslation(
-              translation: Offset(0, offsetAnimation.value),
-              child: DecoratedBox(
-                  decoration: BoxDecoration(color: widget.color),
-                  child: Padding(
-                      padding: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top + 15, bottom: 15, left: 15, right: 15),
-                      child:
-                          Align(alignment: widget.align ?? Alignment.center, child: DefaultTextStyle(style: TextStyle(color: Colors.white, fontSize: 16), child: widget.child))))))
+        left: 0,
+        top: 0,
+        right: 0,
+        child: FractionalTranslation(
+          translation: Offset(0, offsetAnimation.value),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: widget.color,
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, .08),
+                  offset: Offset(5.0, 5.0),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: MediaQueryData.fromWindow(window).padding.top + 15,
+                bottom: 15,
+                left: 15,
+                right: 15,
+              ),
+              child: Align(
+                alignment: widget.align ?? Alignment.center,
+                child: DefaultTextStyle(
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  child: widget.child,
+                ),
+              ),
+            ),
+          ),
+        ),
+      )
     ]);
   }
 }

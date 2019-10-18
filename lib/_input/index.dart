@@ -53,7 +53,7 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
   // 初始化
   _init() {
     controller.addListener(() {
-      print("controller的监听方法：" + controller.text);
+//      print("controller的监听方法：" + controller.text);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((Duration time) {

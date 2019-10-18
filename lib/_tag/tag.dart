@@ -23,10 +23,10 @@ class _EluiTagSizeClass {
   // 大小配置
   final List<Map<String, double>> tagSizeList = [
     { // 3
-      "paddingTop": 4,
-      "paddingRight": 10,
-      "paddingLeft": 10,
-      "paddingBottom": 4,
+      "paddingTop": 2,
+      "paddingRight": 5,
+      "paddingLeft": 5,
+      "paddingBottom": 2,
       "fontSize": 12
     },
     { // 4
@@ -120,15 +120,14 @@ class EluiTagComponent extends StatefulWidget
   // 自定义字体颜色
   final TextStyle textStyle;
 
-  EluiTagComponent(
-      {
-      this.theme,
-      this.round = false,
-      this.value,
-      this.plain = false,
-      this.textStyle,
-      EluiTagColor color = EluiTagColor.none,
-      EluiTagSize size = EluiTagSize.no4}) {
+  EluiTagComponent({
+    this.theme,
+    this.round = false,
+    this.value,
+    this.plain = false,
+    this.textStyle,
+    EluiTagColor color = EluiTagColor.none,
+    EluiTagSize size = EluiTagSize.no4,}) {
     this.size = tagSizeList[size.index];
     this.tagType = size;
     this.color = tagColorList[color.index];
@@ -144,25 +143,26 @@ class EluiTagComponentState extends State<EluiTagComponent> {
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
       DecoratedBox(
-          decoration: BoxDecoration(
-            color: widget.plain ? Colors.transparent : ( widget.theme != null ? widget.theme.backgroundColor : widget.color['color'] ),
+        decoration: BoxDecoration(
+            color: widget.plain ? Colors.transparent : (widget.theme != null ? widget.theme.backgroundColor : widget.color['color']),
             borderRadius: BorderRadius.all(Radius.circular(widget.round ? 100 : 2.0)),
-            border: widget.plain ? Border.all(style: BorderStyle.solid, color: widget.theme != null ? widget.theme.borderColor??widget.color['textColor'] : widget.color['textColor']) : null
-          ),
-          child: Padding(
-              padding: EdgeInsets.only(
-                  top: widget.size['paddingTop'],
-                  right: widget.size['paddingRight'],
-                  bottom: widget.size['paddingBottom'],
-                  left: widget.size['paddingLeft']),
-              child: DefaultTextStyle(
-                  style:
-                      TextStyle(fontSize: 13.0, color: widget.color['color']),
-                  child: Text(widget.value,
-                      style: widget.textStyle ??
-                          TextStyle(
-                              color: widget.theme != null ? widget.theme.textColor??widget.color['textColor'] : widget.color['textColor'],
-                              fontSize: 13)))))
+            border: widget.plain ? Border.all(
+                style: BorderStyle.solid, color: widget.theme != null ? widget.theme.borderColor ?? widget.color['textColor'] : widget.color['textColor']) : null
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: widget.size['paddingTop'],
+              right: widget.size['paddingRight'],
+              bottom: widget.size['paddingBottom'],
+              left: widget.size['paddingLeft']),
+          child: DefaultTextStyle(
+            style:
+            TextStyle(fontSize: 13.0, color: widget.color['color']),
+            child: Text(widget.value,
+              style: widget.textStyle ??
+                  TextStyle(
+                    color: widget.theme != null ? widget.theme.textColor ?? widget.color['textColor'] : widget.color['textColor'],
+                    fontSize: 13,),),),),)
     ]);
   }
 }

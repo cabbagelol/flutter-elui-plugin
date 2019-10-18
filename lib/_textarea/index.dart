@@ -11,6 +11,8 @@ import 'package:flutter_plugin_elui/_input/index.dart';
 class EluiTextareaComponent extends StatefulWidget {
   final String title;
 
+  final Map data;
+
   final String value;
 
   final int maxLines;
@@ -25,6 +27,7 @@ class EluiTextareaComponent extends StatefulWidget {
 
   EluiTextareaComponent({
     this.title,
+    this.data,
     this.value = "",
     this.maxLines = 8,
     this.maxLength,
@@ -68,7 +71,10 @@ class _EluiTextareaComponentState extends State<EluiTextareaComponent> {
                     setState(() {
                       _maxLengh = val_["value"];
                     });
-                    widget.onChange(val_["value"]);
+                    widget.onChange({
+                      "value": val_["value"],
+                      "data": widget.data
+                    });
                   }),
                   widget.maxLength != null ? Positioned(
                     right: 0,

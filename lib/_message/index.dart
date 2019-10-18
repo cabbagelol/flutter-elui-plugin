@@ -6,27 +6,31 @@ import 'package:flutter_plugin_elui/_theme/index.dart';
 import '../utils.dart';
 
 typedef _Notify = Function({
-  int duration,
-  Alignment align,
-  int time,
-  @required Widget child,
+int duration,
+Alignment align,
+int time,
+@required Widget child,
 });
 
 typedef _Show = Function({
-  Color color,
-  Alignment align,
-  int duration,
-  int time,
-  @required Widget child,
+Color color,
+Alignment align,
+int duration,
+int time,
+@required Widget child,
 });
 
 class EluiMessageComponent extends ScaffoldState {
   // 成功
   static _Notify success(BuildContext context) {
-    final int notifySuccessDuration = EluiUi.getConfig(context).notifySuccessDuration;
+    final int notifySuccessDuration = EluiUi
+        .getConfig(context)
+        .notifySuccessDuration;
     return ({duration, align, child, time = 3000}) {
       EluiMessageComponent.show(context)(
-        color: EluiUi.getTheme(context).succeedColor,
+        color: EluiUi
+            .getTheme(context)
+            .succeedColor,
         align: align,
         time: time,
         duration: duration == null ? notifySuccessDuration : duration,
@@ -37,10 +41,14 @@ class EluiMessageComponent extends ScaffoldState {
 
   // 失败
   static _Notify error(BuildContext context) {
-    final int notifyErrorDuration = EluiUi.getConfig(context).notifyErrorDuration;
+    final int notifyErrorDuration = EluiUi
+        .getConfig(context)
+        .notifyErrorDuration;
     return ({duration, align, child, time = 3000}) {
       EluiMessageComponent.show(context)(
-        color: EluiUi.getTheme(context).errorColor,
+        color: EluiUi
+            .getTheme(context)
+            .errorColor,
         align: align,
         time: time,
         duration: duration == null ? notifyErrorDuration : duration,
@@ -51,10 +59,14 @@ class EluiMessageComponent extends ScaffoldState {
 
   // 警告
   static _Notify warning(BuildContext context) {
-    final int notifyErrorDuration = EluiUi.getConfig(context).notifyErrorDuration;
+    final int notifyErrorDuration = EluiUi
+        .getConfig(context)
+        .notifyErrorDuration;
     return ({duration, align, child, time = 3000}) {
       EluiMessageComponent.show(context)(
-        color: EluiUi.getTheme(context).warnColor,
+        color: EluiUi
+            .getTheme(context)
+            .warnColor,
         align: align,
         time: time,
         duration: duration == null ? notifyErrorDuration : duration,
@@ -64,7 +76,9 @@ class EluiMessageComponent extends ScaffoldState {
   }
 
   static _Show show(BuildContext context) {
-    final int notifyDuration = EluiUi.getConfig(context).notifyDuration;
+    final int notifyDuration = EluiUi
+        .getConfig(context)
+        .notifyDuration;
     return ({color, align, duration, child, time = 3000}) {
       final GlobalKey widgetKey = GlobalKey();
       final Function remove = createOverlayEntry(
@@ -72,7 +86,9 @@ class EluiMessageComponent extends ScaffoldState {
         child: EluiMessageComponentWidget(
           key: widgetKey,
           align: align,
-          color: color == null ? EluiUi.getTheme(context).defaultBackgroundColor : color,
+          color: color == null ? EluiUi
+              .getTheme(context)
+              .defaultBackgroundColor : color,
           child: child,
         ),
       );
@@ -82,7 +98,10 @@ class EluiMessageComponent extends ScaffoldState {
         remove();
       }
 
-      Timer(Duration(milliseconds: time), () => {Duration(milliseconds: duration == null ? notifyDuration : duration), close()});
+      Timer(Duration(milliseconds: time), () {
+        Duration(milliseconds: duration == null ? notifyDuration : duration);
+        close();
+      });
     };
   }
 }

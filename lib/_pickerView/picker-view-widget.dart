@@ -10,7 +10,7 @@ class EluiPickerViewComponent extends StatefulWidget {
   final onSucceed;
   final List<List<EluiPickerItem>> options;
 
-  EluiPickerViewComponent({itemCount = 5, this.itemHeight = 42, this.onChange, this.onSucceed, @required this.options})
+  EluiPickerViewComponent({itemCount = 5, this.itemHeight = 42, this.onChange, this.onSucceed, @required this.options,})
       : assert(itemCount % 2 == 1),
         this.itemCount = itemCount;
 
@@ -55,6 +55,9 @@ class EluiPickerViewComponentState extends State<EluiPickerViewComponent> {
       indexs = indexs + 1;
       if (top <= i) {
         itemValue[index] = indexs;
+      }
+      if (top == 0.0) {
+        itemValue[index] = 0;
       }
     });
     widget.onSucceed(itemValue);
@@ -130,12 +133,20 @@ class EluiPickerViewComponentState extends State<EluiPickerViewComponent> {
                         padding: EdgeInsets.only(top: borderTop),
                         child: Column(
                             children: column.map((item) {
-                          return SizedBox(
-                              height: widget.itemHeight,
-                              child: DefaultTextStyle(style: TextStyle(fontSize: 16, color: Colors.black), child: Align(alignment: Alignment.center, child: Text(item.label))));
-                        }).toList()))),
-                Positioned(top: 0, right: 0, left: 0, bottom: borderTop + widget.itemHeight, child: _renderMaskDecoratedBox(Alignment.bottomCenter, Alignment.topCenter)),
-                Positioned(top: borderTop + widget.itemHeight, right: 0, bottom: 0, left: 0, child: _renderMaskDecoratedBox(Alignment.topCenter, Alignment.bottomCenter))
+                              return SizedBox(
+                                  height: widget.itemHeight,
+                                  child: DefaultTextStyle(style: TextStyle(fontSize: 16, color: Colors.black), child: Align(alignment: Alignment.center, child: Text(item.label))));
+                            }).toList()))),
+                Positioned(top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: borderTop + widget.itemHeight,
+                    child: _renderMaskDecoratedBox(Alignment.bottomCenter, Alignment.topCenter)),
+                Positioned(top: borderTop + widget.itemHeight,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    child: _renderMaskDecoratedBox(Alignment.topCenter, Alignment.bottomCenter))
               ]),
             ),
           ),

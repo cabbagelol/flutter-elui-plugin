@@ -26,7 +26,7 @@ class EluiCheckboxComponent extends StatefulWidget {
 }
 
 class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
-  static bool _checkBoxSelected = false;
+  bool _checkBoxSelected = false;
 
   _handleCheckBox(value) {
     setState(() {
@@ -41,9 +41,14 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
   EluiTheme theme;
 
   @override
+  void initState() {
+    super.initState();
+    _checkBoxSelected = widget.checked;
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     theme = EluiUi.getTheme(context);
   }
 
@@ -59,7 +64,7 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
             Padding(
               padding: EdgeInsets.only(right: 5),
               child: _checkboxItem(
-                check: _checkBoxSelected,
+                checked: _checkBoxSelected,
                 color: widget.color ?? theme.primaryColor,
               ),
             ),
@@ -72,11 +77,11 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
 }
 
 class _checkboxItem extends StatelessWidget {
-  final bool check;
+  final bool checked;
   final Color color;
 
   _checkboxItem({
-    this.check,
+    this.checked = false,
     this.color,
   });
 
@@ -86,11 +91,11 @@ class _checkboxItem extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(5)),
       child: Container(
         decoration: BoxDecoration(
-          color: !check ? color : Colors.black12,
+          color: checked ? color : Colors.black12,
         ),
         child: Padding(
           padding: const EdgeInsets.all(2),
-          child: !check
+          child: checked
               ? Icon(
                   Icons.check,
                   size: 18.0,
