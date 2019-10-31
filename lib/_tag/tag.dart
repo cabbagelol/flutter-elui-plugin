@@ -120,6 +120,14 @@ class EluiTagComponent extends StatefulWidget
   // 自定义字体颜色
   final TextStyle textStyle;
 
+  final bool isClose;
+
+  final Function onClose;
+
+  final Function onTap;
+
+  final Function onLongPress;
+
   EluiTagComponent({
     this.theme,
     this.round = false,
@@ -127,7 +135,12 @@ class EluiTagComponent extends StatefulWidget
     this.plain = false,
     this.textStyle,
     EluiTagColor color = EluiTagColor.none,
-    EluiTagSize size = EluiTagSize.no4,}) {
+    this.isClose = false,
+    this.onClose,
+    this.onTap,
+    this.onLongPress,
+    EluiTagSize size = EluiTagSize.no4,
+  }) {
     this.size = tagSizeList[size.index];
     this.tagType = size;
     this.color = tagColorList[color.index];
@@ -141,28 +154,69 @@ class EluiTagComponent extends StatefulWidget
 class EluiTagComponentState extends State<EluiTagComponent> {
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      DecoratedBox(
-        decoration: BoxDecoration(
-            color: widget.plain ? Colors.transparent : (widget.theme != null ? widget.theme.backgroundColor : widget.color['color']),
-            borderRadius: BorderRadius.all(Radius.circular(widget.round ? 100 : 2.0)),
-            border: widget.plain ? Border.all(
-                style: BorderStyle.solid, color: widget.theme != null ? widget.theme.borderColor ?? widget.color['textColor'] : widget.color['textColor']) : null
+    return Stack(
+      overflow: Overflow.visible,
+      children: <Widget>[
+        GestureDetector(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: widget.plain ? Colors.transparent : (widget.theme != null ? widget.theme.backgroundColor : widget.color['color']),
+                      borderRadius: BorderRadius.all(Radius.circular(widget.round ? 100 : 2.0)),
+                      border: widget.plain ? Border.all(
+                          style: BorderStyle.solid, color: widget.theme != null ? widget.theme.borderColor ?? widget.color['textColor'] : widget.color['textColor']) : null
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: widget.size['paddingTop'],
+                      right: widget.size['paddingRight'],
+                      bottom: widget.size['paddingBottom'],
+                      left: widget.size['paddingLeft'],
+                    ),
+                    child: DefaultTextStyle(
+                      style:
+                      TextStyle(fontSize: 13.0, color: widget.color['color']),
+                      child: Text(widget.value,
+                        style: widget.textStyle ??
+                            TextStyle(
+                              color: widget.theme != null ? widget.theme.textColor ?? widget.color['textColor'] : widget.color['textColor'],
+                              fontSize: 13,
+                            ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            onTap: () => widget.onTap != null ? widget.onTap() : null,
+            onLongPress: () => widget.onLongPress != null ? widget.onLongPress() : null,
         ),
-        child: Padding(
-          padding: EdgeInsets.only(
-              top: widget.size['paddingTop'],
-              right: widget.size['paddingRight'],
-              bottom: widget.size['paddingBottom'],
-              left: widget.size['paddingLeft']),
-          child: DefaultTextStyle(
-            style:
-            TextStyle(fontSize: 13.0, color: widget.color['color']),
-            child: Text(widget.value,
-              style: widget.textStyle ??
-                  TextStyle(
-                    color: widget.theme != null ? widget.theme.textColor ?? widget.color['textColor'] : widget.color['textColor'],
-                    fontSize: 13,),),),),)
-    ]);
+        Positioned(
+            right: -5,
+            top: -5,
+            child: Offstage(
+                offstage: !widget.isClose,
+                child: GestureDetector(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      color: widget.color["color"] ?? Color(0xfff2f2f2),
+                      child: Icon(
+                        Icons.close,
+                        size: 8,
+                        color: widget.color["textColor"] ?? Color(0xff000000),
+                      ),
+                    ),
+                  ),
+                  onTap: () => widget.onClose != null ? widget.onClose() : null,
+                )
+            )
+        )
+      ],
+    );
   }
 }

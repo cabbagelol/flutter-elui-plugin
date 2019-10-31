@@ -10,15 +10,21 @@ import '../_theme/index.dart';
 
 class EluiCheckboxComponent extends StatefulWidget {
   final Function onChanged;
+
   final bool checked;
+
   final Widget child;
+
   final Color color;
+
+  final bool disable;
 
   EluiCheckboxComponent({
     this.onChanged,
     this.child,
     this.checked = false,
     this.color,
+    this.disable = false,
   });
 
   @override
@@ -57,6 +63,9 @@ class _EluiCheckboxComponentState extends State<EluiCheckboxComponent> {
     return Container(
       child: GestureDetector(
         onTap: () {
+          if (widget.disable) {
+            return;
+          }
           _handleCheckBox(_checkBoxSelected != true);
         },
         child: Row(
@@ -97,15 +106,15 @@ class _checkboxItem extends StatelessWidget {
           padding: const EdgeInsets.all(2),
           child: checked
               ? Icon(
-                  Icons.check,
-                  size: 18.0,
-                  color: Colors.white,
-                )
+            Icons.check,
+            size: 18.0,
+            color: Colors.white,
+          )
               : Icon(
-                  Icons.check,
-                  size: 18.0,
-                  color: Colors.transparent,
-                ),
+            Icons.check,
+            size: 18.0,
+            color: Colors.transparent,
+          ),
         ),
       ),
     );

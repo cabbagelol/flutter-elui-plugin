@@ -57,6 +57,7 @@ class EluiMessageComponentWidgetState extends State<EluiMessageComponentWidget> 
         child: FractionalTranslation(
           translation: Offset(0, offsetAnimation.value),
           child: DecoratedBox(
+
             decoration: BoxDecoration(
               color: widget.color,
               boxShadow: [

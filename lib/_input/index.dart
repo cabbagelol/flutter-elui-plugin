@@ -8,14 +8,25 @@ import 'package:flutter/material.dart';
 
 class EluiInputComponent extends StatefulWidget {
   final Map data;
+
   final String title;
+
   final String value;
+
   final String placeholder;
+
   final Widget icon;
+
   final Widget right;
+
   final TextInputType type;
+
   final bool Internalstyle;
+
+  final EluiInputTheme theme;
+
   final int maxLenght;
+
   final Function onChange;
 
   EluiInputComponent({
@@ -29,6 +40,7 @@ class EluiInputComponent extends StatefulWidget {
     this.type,
     this.maxLenght = null,
     this.Internalstyle,
+    this.theme,
     this.onChange
   });
 
@@ -42,6 +54,7 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
   /// 内部值长度
   int _text = 0;
 
+  /// 输入器控制器
   TextEditingController controller = TextEditingController();
 
   TextInputAction textInputAction;
@@ -63,9 +76,9 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
 
   // 清除value
   void _clearValue() {
-    _setValue('');
+    _setValue("");
     if (widget.onChange is Function) {
-      widget.onChange('');
+      widget.onChange("");
     }
   }
 
@@ -89,7 +102,7 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: widget.Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+      padding: widget.Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20,),
       child: Row(
         children: <Widget>[
           Offstage(
@@ -113,9 +126,12 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
               controller: controller,
               maxLength: widget.maxLenght,
               maxLengthEnforced: true,
+              textStyle: widget.theme != null ? widget.theme.textStyle : null,
               onChange: (value_) {
                 setState(() {
-                  _text = value_["value"].toString().length;
+                  _text = value_["value"]
+                      .toString()
+                      .length;
                 });
                 _onChange(value_["value"]);
               },
@@ -142,17 +158,36 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
   }
 }
 
+class EluiInputTheme {
+  final TextStyle textStyle;
+
+  EluiInputTheme({
+    this.textStyle = null,
+  });
+}
+
 class Input extends StatefulWidget {
   final focusNode;
+
   final placeholder;
+
   final maxLines;
+
   final maxLength;
+
   final contentPadding;
+
   final value;
+
   final type;
+
   final maxLengthEnforced;
+
   final Function onChange;
+
   final controller;
+
+  final textStyle;
 
   Input({
     this.focusNode,
@@ -164,7 +199,8 @@ class Input extends StatefulWidget {
     this.type = TextInputType.text,
     this.maxLengthEnforced = true,
     this.onChange,
-    this.controller
+    this.textStyle,
+    this.controller,
   });
 
   @override
@@ -180,7 +216,7 @@ class InputState extends State<Input> {
     return Container(
       child: TextField(
         focusNode: widget.focusNode,
-        style: TextStyle(
+        style: widget.textStyle??TextStyle(
             fontSize: 15
         ),
         keyboardType: widget.type,

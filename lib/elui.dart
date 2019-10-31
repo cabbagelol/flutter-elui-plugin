@@ -23,3 +23,4 @@ export '_radio/index.dart';
 export '_numlndicator/index.dart';
 export '_tip/index.dart';
 export '_countdown/index.dart';
+export '_file/index.dart';
