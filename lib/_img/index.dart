@@ -23,7 +23,7 @@ class EluiImgComponent extends StatefulWidget {
   final PlaceholderWidgetBuilder placeholder;
 
   EluiImgComponent({
-    this.src,
+    @required this.src,
     this.width = 100,
     this.height = 100,
     this.fit = BoxFit.cover,
@@ -53,8 +53,6 @@ class _EluiImgComponentState extends State<EluiImgComponent> {
             image: DecorationImage(
               image: imageProvider,
               fit: widget.fit,
-//                colorFilter:
-//                ColorFilter.mode(Colors.red, BlendMode.colorBurn)
             ),
           ),
         ),
@@ -69,7 +67,6 @@ class _EluiImgComponentState extends State<EluiImgComponent> {
               : (widget.placeholder != null ? widget.placeholder : null);
         },
         errorWidget: (context, url, error) {
-          //
           return true ? widget.errorWidget : Image.asset(
             "lib/_img/background.png",
             package: "flutter_plugin_elui",

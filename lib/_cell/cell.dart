@@ -10,25 +10,45 @@ class EluiCellTextAlign {
   static const CrossAxisAlignment right = CrossAxisAlignment.end;
 }
 
+class EluiCellTheme {
+  final Color titleColor;
+  final Color labelColor;
+  final Color linkColor;
+  final Color backgroundColor;
+
+  static ThemeData theme;
+
+  EluiCellTheme({
+    this.titleColor,
+    this.labelColor,
+    this.linkColor = Colors.black,
+    this.backgroundColor = Colors.white,
+  });
+}
+
 class EluiCellComponent extends StatefulWidget {
   final Widget icons;
   final String title;
   final String label;
+  final EluiCellTheme theme;
   final bool islink;
   final bool isBotton;
   final Widget cont;
   final CrossAxisAlignment textAlign;
   final GestureTapCallback onTap;
 
-  EluiCellComponent({this.icons,
+  EluiCellComponent({
+    this.icons,
     this.title,
     this.islink = false,
     this.isBotton = false,
     this.label,
+    EluiCellTheme theme,
     this.cont,
     this.textAlign = EluiCellTextAlign.center,
-    this.onTap,
-  });
+    GestureTapCallback onTap,
+  })  : onTap = onTap ?? null,
+        theme = theme ?? EluiCellTheme();
 
   @override
   State<EluiCellComponent> createState() {
@@ -37,76 +57,111 @@ class EluiCellComponent extends StatefulWidget {
 }
 
 class EluiCellComponentState extends State<EluiCellComponent> {
-  Widget _islink() {
-    if (widget.islink) {
-      return Icon(Icons.keyboard_arrow_right);
-    }
-    return Column();
-  }
+  EluiCellTheme _theme;
 
   @override
   Widget build(BuildContext context) {
+    _theme = widget.theme;
+
     return GestureDetector(
       child: Container(
-        color: Color(0xf2f2f2f2),
-        padding: EdgeInsets.only(bottom: 1),
-        child: Container(
-          color: Colors.white,
-          padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: widget.textAlign,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  widget.icons != null
-                      ? Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: widget.icons,
-                  )
-                      : Container(),
+        color: _theme.backgroundColor,
+        padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+        child: Flex(
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: widget.textAlign,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                if (widget.icons != null)
                   Container(
                     margin: EdgeInsets.only(right: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(bottom: widget.label != null ? 5 : 0),
-                          child: Text(widget.title, style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15
-                          ),),
+                    child: widget.icons,
+                  ),
+                Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(bottom: widget.label != null ? 5 : 0),
+                        child: Text(
+                          widget.title,
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: _theme.titleColor),
                         ),
-                        widget.label != null
-                            ? Text(
-                          widget.label,
+                      ),
+                      if (widget.label != null)
+                        Text(
+                          widget.label ?? '',
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 11),
-                        )
-                            : Column()
-                      ],
-                    ),
+                          style: TextStyle(fontSize: 11, color: _theme.labelColor),
+                        ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(right: widget.islink ? 10 : 0),
+                    child: widget.cont ?? Column(),
                   )
                 ],
               ),
-              Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(right: widget.islink ? 10 : 0),
-                        child: widget.cont ?? Column(),
-                      )
-                    ],
-                  )),
-              _islink()
-            ],
-          ),
+            ),
+            EluiCellLink(
+              islink: widget.islink,
+            )..linkColor = _theme.linkColor,
+          ],
         ),
       ),
-      onTap: widget.onTap,
+      onTap: () => widget.onTap?.call(),
     );
   }
+}
+
+class EluiCellIcon extends StatelessWidget {
+  final Widget child;
+  final bool show;
+
+  EluiCellIcon({
+    @required this.child,
+    this.show = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: show,
+      child: child,
+    );
+  }
+}
+
+class EluiCellLink extends StatelessWidget {
+  final bool islink;
+  Color _linkColor;
+
+  EluiCellLink({
+    this.islink,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: islink,
+      child: Icon(
+        Icons.keyboard_arrow_right,
+        color: _linkColor,
+      ),
+    );
+  }
+
+  set linkColor(Color value) => _linkColor = value;
 }

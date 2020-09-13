@@ -1,6 +1,6 @@
-# flutter_plugin_elui_example
+# flutter_elui_plugin_example
 
-Demonstrates how to use the flutter_plugin_elui plugin.
+Demonstrates how to use the flutter_elui_plugin plugin.
 
 ## Getting Started
 
