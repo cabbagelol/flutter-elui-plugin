@@ -38,11 +38,13 @@ class EluiInputComponent extends StatefulWidget {
     this.icon,
     this.right,
     this.type,
-    this.maxLenght = null,
+    int maxLenght,
     this.Internalstyle,
-    this.theme,
-    this.onChange
-  });
+    EluiInputTheme theme,
+    this.onChange,
+  })
+      : this.maxLenght = maxLenght ?? null,
+        theme = theme ?? EluiInputTheme();
 
   @override
   _EluiInputComponentState createState() => _EluiInputComponentState();
@@ -85,10 +87,7 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
   // 输入框onChange
   void _onChange(String value) {
     if (widget.onChange is Function) {
-      widget.onChange({
-        "data": widget.data,
-        "value": value ?? ""
-      });
+      widget.onChange({"data": widget.data, "value": value ?? ""});
     }
     setState(() {});
   }
@@ -101,23 +100,33 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
 
   @override
   Widget build(BuildContext context) {
+    EluiInputTheme _theme = widget.theme;
+
     return Container(
-      padding: widget.Internalstyle != null ? EdgeInsets.all(0) : EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20,),
+      padding: widget.Internalstyle != null
+          ? EdgeInsets.all(0)
+          : EdgeInsets.only(
+        top: 15,
+        bottom: 15,
+        left: 20,
+        right: 20,
+      ),
       child: Row(
         children: <Widget>[
-          Offstage(
-            offstage: widget.icon == null,
-            child: Container(
+          if (widget.icon == null)
+            Container(
               margin: EdgeInsets.only(right: 10),
               child: widget.icon,
             ),
-          ),
           Container(
             margin: EdgeInsets.only(right: 10),
-            child: Text(widget.title ?? '', style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),),
+            child: Text(
+              widget.title ?? '',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           Expanded(
             flex: 1,
@@ -126,7 +135,9 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
               controller: controller,
               maxLength: widget.maxLenght,
               maxLengthEnforced: true,
-              textStyle: widget.theme != null ? widget.theme.textStyle : null,
+              textStyle: _theme.textStyle ?? TextStyle(
+                color: Colors.white,
+              ),
               onChange: (value_) {
                 setState(() {
                   _text = value_["value"]
@@ -141,7 +152,11 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
             offstage: _text <= 0,
             child: GestureDetector(
               child: Container(
-                child: Icon(Icons.cancel, size: 20, color: Colors.black38,),
+                child: Icon(
+                  Icons.cancel,
+                  size: 20,
+                  color: Colors.black38,
+                ),
               ),
               onTap: () {
                 controller.clear();
@@ -151,7 +166,8 @@ class _EluiInputComponentState extends State<EluiInputComponent> {
               },
             ),
           ),
-          widget.right ?? Container()
+          if (widget.right != null) widget.right else
+            Container(),
         ],
       ),
     );
@@ -162,7 +178,7 @@ class EluiInputTheme {
   final TextStyle textStyle;
 
   EluiInputTheme({
-    this.textStyle = null,
+    this.textStyle = const TextStyle(),
   });
 }
 
@@ -187,7 +203,7 @@ class Input extends StatefulWidget {
 
   final controller;
 
-  final textStyle;
+  final TextStyle textStyle;
 
   Input({
     this.focusNode,
@@ -216,15 +232,16 @@ class InputState extends State<Input> {
     return Container(
       child: TextField(
         focusNode: widget.focusNode,
-        style: widget.textStyle??TextStyle(
-            fontSize: 15
-        ),
+        style: widget.textStyle ?? TextStyle(fontSize: 15),
         keyboardType: widget.type,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength,
         maxLengthEnforced: widget.maxLengthEnforced,
         decoration: InputDecoration(
           hintText: widget.placeholder,
+          hintStyle: widget.textStyle.copyWith(
+            color: widget.textStyle.color.withOpacity(.6),
+          ),
           border: InputBorder.none,
           fillColor: Colors.transparent,
           filled: false,
@@ -235,9 +252,7 @@ class InputState extends State<Input> {
         ),
         controller: widget.controller ?? _name,
         onChanged: (value_) {
-          widget.onChange({
-            "value": value_
-          });
+          widget.onChange({"value": value_});
         },
       ),
     );

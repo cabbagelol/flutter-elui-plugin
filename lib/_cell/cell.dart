@@ -15,6 +15,7 @@ class EluiCellTheme {
   final Color labelColor;
   final Color linkColor;
   final Color backgroundColor;
+  final EdgeInsets cellPadding;
 
   static ThemeData theme;
 
@@ -23,6 +24,7 @@ class EluiCellTheme {
     this.labelColor,
     this.linkColor = Colors.black,
     this.backgroundColor = Colors.white,
+    this.cellPadding,
   });
 }
 
@@ -39,7 +41,7 @@ class EluiCellComponent extends StatefulWidget {
 
   EluiCellComponent({
     this.icons,
-    this.title,
+    @required this.title,
     this.islink = false,
     this.isBotton = false,
     this.label,
@@ -66,62 +68,59 @@ class EluiCellComponentState extends State<EluiCellComponent> {
     return GestureDetector(
       child: Container(
         color: _theme.backgroundColor,
-        padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+        padding: _theme.cellPadding ?? EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
         child: Flex(
           direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: widget.textAlign,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                if (widget.icons != null)
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    child: widget.icons,
-                  ),
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(bottom: widget.label != null ? 5 : 0),
-                        child: Text(
-                          widget.title,
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: _theme.titleColor),
-                        ),
-                      ),
-                      if (widget.label != null)
-                        Text(
-                          widget.label ?? '',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 11, color: _theme.labelColor),
-                        ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+            if (widget.icons != null)
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: widget.icons,
+              ),
             Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(right: widget.islink ? 10 : 0),
-                    child: widget.cont ?? Column(),
-                  )
-                ],
+              child: Container(
+                margin: EdgeInsets.only(right: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: widget.label != null ? 5 : 0),
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: _theme.titleColor),
+                      ),
+                    ),
+                    if (widget.label != null)
+                      Text(
+                        widget.label ?? '',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontSize: 11, color: _theme.labelColor),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: widget.label.length,
+                      ),
+                  ],
+                ),
               ),
             ),
+            if (widget.cont != null)
+              Row(
+                children: <Widget>[
+                  widget.cont,
+                  if (widget.islink)
+                    SizedBox(
+                      width: 10,
+                    ),
+                ],
+              ),
             EluiCellLink(
               islink: widget.islink,
             )..linkColor = _theme.linkColor,
           ],
         ),
       ),
-      onTap: () => widget.onTap?.call(),
+      onTap: widget.onTap,
     );
   }
 }

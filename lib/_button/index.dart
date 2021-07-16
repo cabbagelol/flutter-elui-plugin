@@ -20,9 +20,9 @@ class _EluiButtonClass {
 
   // 大小配置
   final List<Map<String, double>> sizeConfig = [
-    {'fontSize': 13.0, 'height': 5, 'iconSize': 14.0, 'borderSize': 0.4},
-    {'fontSize': 18.0, 'height': 8, 'iconSize': 16.0, 'borderSize': 0.5},
-    {'fontSize': 21.0, 'height': 15, 'iconSize': 18.0, 'borderSize': 0.6}
+    {'fontSize': 13.0, 'height': 40, 'iconSize': 14.0, 'borderSize': 0.4},
+    {'fontSize': 18.0, 'height': 50, 'iconSize': 16.0, 'borderSize': 0.5},
+    {'fontSize': 21.0, 'height': 60, 'iconSize': 18.0, 'borderSize': 0.6}
   ];
 }
 
@@ -181,7 +181,8 @@ class _EluiButtonComponentState extends State<EluiButtonComponent> {
         borderRadius: borderRadius,
         child: AnimatedContainer(
           duration: Duration(seconds: 1),
-          padding: _theme?.buttonPadding ?? EdgeInsets.symmetric(vertical: widget.size['height']),
+          height: widget.size['height'],
+          padding: _theme?.buttonPadding,
           decoration: BoxDecoration(
             color:
                 disabled ? type['disabledBackgroundColor'] : widget.theme != null ? widget.theme.backgroundColor : type['backgroundColor'],
