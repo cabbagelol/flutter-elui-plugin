@@ -127,7 +127,7 @@ class EluiUi extends InheritedWidget {
       : super(key: key, child: child);
 
   static EluiUi of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(EluiUi);
+    return context.dependOnInheritedWidgetOfExactType<EluiUi>();
   }
 
   // 获取主题配置

@@ -5,14 +5,13 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.20.0 <2.0.0"
+  sdk: ">=2.7.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flare_flutter: ^1.5.4
-  cached_network_image: 2.3.2+1
+  cached_network_image: ^2.1.0
   image_picker: ^0.6.1+8
 
 dev_dependencies:
